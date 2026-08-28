@@ -4,7 +4,13 @@ import 'screens/onboarding_screen.dart';
 import 'screens/home_screen.dart';
 import 'providers/user_profile_provider.dart';
 
-void main() {
+import 'services/notification_service.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().init();
+  await NotificationService().requestPermissions();
+
   runApp(
     const ProviderScope(
       child: MyApp(),

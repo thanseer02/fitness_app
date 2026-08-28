@@ -6,6 +6,7 @@ import 'workout_tab.dart';
 import 'nutrition_tab.dart';
 import '../providers/nutrition_provider.dart';
 import 'progress_tab.dart';
+import 'notification_settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -52,7 +53,19 @@ class _ProfileTab extends ConsumerWidget {
     final targets = ref.watch(macroTargetsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(
+        title: const Text('Profile'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const NotificationSettingsScreen()),
+              );
+            },
+          ),
+        ],
+      ),
       body: profileState.when(
         data: (profile) {
           if (profile == null) {

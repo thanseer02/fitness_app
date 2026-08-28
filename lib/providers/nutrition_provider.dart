@@ -6,6 +6,7 @@ import '../models/user_profile.dart';
 import 'isar_provider.dart';
 import 'user_profile_provider.dart';
 import '../services/calorie_service.dart';
+import '../services/notification_service.dart';
 
 class NutritionSeedService {
   static Future<void> seedFoods(Isar isar) async {
@@ -103,6 +104,19 @@ class DailyNutritionNotifier extends AsyncNotifier<DailyNutrition> {
         await isar.dailyNutritions.put(updatedDaily);
       });
       state = AsyncValue.data(updatedDaily);
+      
+      // Cancel protein reminder if target met
+      double currentProtein = 0;
+      for (final m in updatedDaily.meals) {
+        for (final e in m.entries) {
+          currentProtein += e.protein ?? 0;
+        }
+      }
+      final targets = ref.read(macroTargetsProvider);
+      if (currentProtein >= targets.protein) {
+        NotificationService().cancelProteinReminder();
+      }
+      
     } catch (e, st) {
       state = AsyncValue.error(e, st);
     }

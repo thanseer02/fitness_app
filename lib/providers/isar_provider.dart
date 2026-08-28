@@ -8,6 +8,7 @@ import '../models/workout_session.dart';
 import '../models/food.dart';
 import '../models/daily_nutrition.dart';
 import '../models/weight_entry.dart';
+import '../models/notification_settings.dart';
 
 final isarProvider = FutureProvider<Isar>((ref) async {
   final dir = await getApplicationDocumentsDirectory();
@@ -20,6 +21,7 @@ final isarProvider = FutureProvider<Isar>((ref) async {
       FoodSchema,
       DailyNutritionSchema,
       WeightEntrySchema,
+      NotificationSettingsSchema,
     ],
     directory: dir.path,
   );
