@@ -91,7 +91,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
           subtitle: subtitle != null ? Text(subtitle) : null,
           value: isEnabled,
           onChanged: onToggle,
-          activeColor: Theme.of(context).primaryColor,
+          activeThumbColor: Theme.of(context).primaryColor,
         ),
         if (isEnabled)
           Padding(

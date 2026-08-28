@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import '../models/food.dart';
 import '../models/daily_nutrition.dart';
-import '../models/user_profile.dart';
 import 'isar_provider.dart';
 import 'user_profile_provider.dart';
 import '../services/calorie_service.dart';

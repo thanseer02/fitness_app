@@ -22,7 +22,7 @@ class NutritionTab extends ConsumerWidget {
         LinearProgressIndicator(
           value: progress,
           color: color,
-          backgroundColor: color.withOpacity(0.2),
+          backgroundColor: color.withValues(alpha: 0.2),
           minHeight: 8,
         ),
         const SizedBox(height: 12),

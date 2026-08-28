@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import '../models/workout.dart';
 import '../models/exercise.dart';
-import '../models/workout_session.dart';
 import 'isar_provider.dart';
 
 class WorkoutSeedService {

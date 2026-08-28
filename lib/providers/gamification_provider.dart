@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import '../models/achievement.dart';
 import '../models/workout_session.dart';
-import '../models/daily_nutrition.dart';
 import '../models/weight_entry.dart';
 import 'isar_provider.dart';
 

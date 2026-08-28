@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:isar/isar.dart';
 import '../models/notification_settings.dart';
 import '../services/notification_service.dart';
 import 'isar_provider.dart';

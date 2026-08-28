@@ -142,7 +142,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                             prefixIcon: const Icon(Icons.flag),
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                           ),
-                          value: _goal,
+                          initialValue: _goal,
                           items: Goal.values.map((g) {
                             return DropdownMenuItem(value: g, child: Text(g.name.toUpperCase()));
                           }).toList(),
@@ -155,7 +155,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                             prefixIcon: const Icon(Icons.directions_run),
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                           ),
-                          value: _activityLevel,
+                          initialValue: _activityLevel,
                           items: ActivityLevel.values.map((a) {
                             return DropdownMenuItem(value: a, child: Text(a.name.toUpperCase()));
                           }).toList(),
