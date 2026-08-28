@@ -25,6 +25,7 @@ import 'package:fitjourney/features/nutrition/repository/nutrition_repository.da
 import 'package:fitjourney/features/nutrition/viewmodel/nutrition_viewmodel.dart';
 import 'package:fitjourney/features/progress/repository/progress_repository.dart';
 import 'package:fitjourney/features/progress/viewmodel/progress_viewmodel.dart';
+import 'package:fitjourney/core/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -90,14 +91,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'FitJourney',
       themeMode: viewModel.themeMode,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, brightness: Brightness.light),
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, brightness: Brightness.dark),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       home: Builder(
         builder: (context) {
           if (viewModel.isLoading) {

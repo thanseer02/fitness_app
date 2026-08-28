@@ -1,14 +1,37 @@
 import 'package:flutter/material.dart';
+import 'app_colors.dart';
+import 'app_text_styles.dart';
 
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      colorSchemeSeed: Colors.blue,
+      colorScheme: const ColorScheme.light(
+        primary: AppColors.primary,
+        secondary: AppColors.secondary,
+        surface: AppColors.lightSurface,
+        error: AppColors.error,
+        onPrimary: Colors.white,
+        onSecondary: Colors.black,
+        onSurface: AppColors.lightTextPrimary,
+        onError: Colors.white,
+      ),
+      scaffoldBackgroundColor: AppColors.lightBackground,
+      textTheme: AppTextStyles.textTheme.apply(
+        bodyColor: AppColors.lightTextPrimary,
+        displayColor: AppColors.lightTextPrimary,
+      ),
       appBarTheme: const AppBarTheme(
-        centerTitle: true,
+        backgroundColor: AppColors.lightBackground,
+        foregroundColor: AppColors.lightTextPrimary,
         elevation: 0,
+        centerTitle: true,
+      ),
+      dividerTheme: const DividerThemeData(
+        color: AppColors.lightBorder,
+        thickness: 1,
+        space: 1,
       ),
     );
   }
@@ -17,10 +40,31 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      colorSchemeSeed: Colors.blue,
+      colorScheme: const ColorScheme.dark(
+        primary: AppColors.primary,
+        secondary: AppColors.secondary,
+        surface: AppColors.darkSurface,
+        error: AppColors.error,
+        onPrimary: Colors.white,
+        onSecondary: Colors.black,
+        onSurface: AppColors.darkTextPrimary,
+        onError: Colors.white,
+      ),
+      scaffoldBackgroundColor: AppColors.darkBackground,
+      textTheme: AppTextStyles.textTheme.apply(
+        bodyColor: AppColors.darkTextPrimary,
+        displayColor: AppColors.darkTextPrimary,
+      ),
       appBarTheme: const AppBarTheme(
-        centerTitle: true,
+        backgroundColor: AppColors.darkBackground,
+        foregroundColor: AppColors.darkTextPrimary,
         elevation: 0,
+        centerTitle: true,
+      ),
+      dividerTheme: const DividerThemeData(
+        color: AppColors.darkBorder,
+        thickness: 1,
+        space: 1,
       ),
     );
   }
