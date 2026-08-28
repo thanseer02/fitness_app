@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:fitjourney/models/food.dart';
 import 'package:fitjourney/features/nutrition/viewmodel/nutrition_viewmodel.dart';
 
-class FoodSearchScreen extends ConsumerWidget {
+class FoodSearchScreen extends StatelessWidget {
   final String mealType;
 
   const FoodSearchScreen({super.key, required this.mealType});
 
-  void _showAddDialog(BuildContext context, WidgetRef ref, Food food) {
+  void _showAddDialog(BuildContext context, Food food) {
     showDialog(
       context: context,
       builder: (context) => _AddFoodDialog(mealType: mealType, food: food, parentContext: context),
@@ -16,8 +16,8 @@ class FoodSearchScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(nutritionViewModelProvider);
+  Widget build(BuildContext context) {
+    final viewModel = context.watch<NutritionViewModel>();
 
     return Scaffold(
       appBar: AppBar(title: Text('Add to $mealType')),
@@ -32,7 +32,7 @@ class FoodSearchScreen extends ConsumerWidget {
                 border: OutlineInputBorder(),
               ),
               onChanged: (val) {
-                ref.read(nutritionViewModelProvider).setSearchQuery(val.toLowerCase());
+                context.read<NutritionViewModel>().setSearchQuery(val.toLowerCase());
               },
             ),
           ),
@@ -40,19 +40,19 @@ class FoodSearchScreen extends ConsumerWidget {
             title: const Text('Hostel Friendly Only'),
             value: viewModel.hostelFriendlyOnly,
             onChanged: (val) {
-              ref.read(nutritionViewModelProvider).toggleHostelFriendly(val);
+              context.read<NutritionViewModel>().toggleHostelFriendly(val);
             },
           ),
           const Divider(),
           Expanded(
-            child: _buildFoodList(context, ref, viewModel),
+            child: _buildFoodList(context, viewModel),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFoodList(BuildContext context, WidgetRef ref, NutritionViewModel viewModel) {
+  Widget _buildFoodList(BuildContext context, NutritionViewModel viewModel) {
     if (viewModel.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -77,14 +77,14 @@ class FoodSearchScreen extends ConsumerWidget {
           trailing: food.isHostelFriendly 
               ? const Icon(Icons.check_circle, color: Colors.green, size: 16) 
               : null,
-          onTap: () => _showAddDialog(context, ref, food),
+          onTap: () => _showAddDialog(context, food),
         );
       },
     );
   }
 }
 
-class _AddFoodDialog extends ConsumerStatefulWidget {
+class _AddFoodDialog extends StatefulWidget {
   final String mealType;
   final Food food;
   final BuildContext parentContext;
@@ -92,10 +92,10 @@ class _AddFoodDialog extends ConsumerStatefulWidget {
   const _AddFoodDialog({required this.mealType, required this.food, required this.parentContext});
 
   @override
-  ConsumerState<_AddFoodDialog> createState() => _AddFoodDialogState();
+  State<_AddFoodDialog> createState() => _AddFoodDialogState();
 }
 
-class _AddFoodDialogState extends ConsumerState<_AddFoodDialog> {
+class _AddFoodDialogState extends State<_AddFoodDialog> {
   double _quantity = 100;
 
   @override
@@ -133,7 +133,7 @@ class _AddFoodDialogState extends ConsumerState<_AddFoodDialog> {
         ElevatedButton(
           onPressed: () async {
             if (_quantity > 0) {
-              final viewModel = ref.read(nutritionViewModelProvider); // not using .notifier because it's a provider of a ChangeNotifier, so .notifier doesn't exist
+              final viewModel = context.read<NutritionViewModel>();
               await viewModel.addFood(widget.mealType, widget.food, _quantity);
               if (!context.mounted) return;
               Navigator.of(context).pop(); // pop dialog

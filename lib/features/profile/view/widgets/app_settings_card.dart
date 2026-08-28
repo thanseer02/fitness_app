@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
 
-class AppSettingsCard extends ConsumerWidget {
+class AppSettingsCard extends StatelessWidget {
   const AppSettingsCard({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isDark = ref.watch(profileViewModelProvider).themeMode == ThemeMode.dark;
+  Widget build(BuildContext context) {
+    final isDark = context.watch<ProfileViewModel>().themeMode == ThemeMode.dark;
     
     return Card(
       child: Padding(
@@ -22,7 +22,7 @@ class AppSettingsCard extends ConsumerWidget {
               title: const Text('Dark Mode'),
               value: isDark,
               onChanged: (val) {
-                ref.read(profileViewModelProvider).toggleTheme(val);
+                context.read<ProfileViewModel>().toggleTheme(val);
               },
             ),
           ],

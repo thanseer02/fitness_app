@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:fitjourney/models/weight_entry.dart';
 import 'package:fitjourney/features/progress/viewmodel/progress_viewmodel.dart';
 
-class WeeklyCheckInScreen extends ConsumerStatefulWidget {
+class WeeklyCheckInScreen extends StatefulWidget {
   const WeeklyCheckInScreen({super.key});
 
   @override
-  ConsumerState<WeeklyCheckInScreen> createState() => _WeeklyCheckInScreenState();
+  State<WeeklyCheckInScreen> createState() => _WeeklyCheckInScreenState();
 }
 
-class _WeeklyCheckInScreenState extends ConsumerState<WeeklyCheckInScreen> {
+class _WeeklyCheckInScreenState extends State<WeeklyCheckInScreen> {
   double _weight = 0;
   bool _isSaving = false;
 
@@ -19,7 +19,7 @@ class _WeeklyCheckInScreenState extends ConsumerState<WeeklyCheckInScreen> {
 
     setState(() => _isSaving = true);
 
-    await ref.read(progressViewModelProvider).logWeight(_weight);
+    await context.read<ProgressViewModel>().logWeight(_weight);
 
     if (mounted) {
       Navigator.of(context).pop();

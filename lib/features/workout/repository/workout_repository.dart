@@ -1,14 +1,7 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:fitjourney/models/workout.dart';
 import 'package:fitjourney/models/exercise.dart';
 import 'package:fitjourney/models/workout_session.dart';
-import 'package:fitjourney/core/di/isar_provider.dart';
-
-final workoutRepositoryProvider = FutureProvider<WorkoutRepository>((ref) async {
-  final isar = await ref.watch(isarProvider.future);
-  return WorkoutRepository(isar);
-});
 
 class WorkoutRepository {
   final Isar _isar;

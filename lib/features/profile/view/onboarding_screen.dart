@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:fitjourney/models/user_profile.dart';
 import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:fitjourney/features/home/view/home_screen.dart';
 import 'widgets/onboarding_form_card.dart';
 
-class OnboardingScreen extends ConsumerStatefulWidget {
+class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
+class _OnboardingScreenState extends State<OnboardingScreen> {
   final _formKey = GlobalKey<FormState>();
 
   String _name = '';
@@ -27,16 +27,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      final profile = UserProfile()
-        ..name = _name
-        ..age = _age
-        ..height = _height
-        ..currentWeight = _currentWeight
-        ..targetWeight = _targetWeight
-        ..goal = _goal
-        ..activityLevel = _activityLevel;
-
-      await ref.read(profileViewModelProvider).saveProfile(profile);
+      await context.read<ProfileViewModel>().createProfile(
+        name: _name,
+        age: _age,
+        height: _height,
+        currentWeight: _currentWeight,
+        targetWeight: _targetWeight,
+        goal: _goal,
+        activityLevel: _activityLevel,
+      );
 
       if (mounted) {
         Navigator.of(context).pushReplacement(

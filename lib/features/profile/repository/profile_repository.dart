@@ -1,14 +1,7 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:fitjourney/models/user_profile.dart';
 import 'package:fitjourney/models/app_settings.dart';
 import 'package:fitjourney/models/notification_settings.dart';
-import 'package:fitjourney/core/di/isar_provider.dart';
-
-final profileRepositoryProvider = FutureProvider<ProfileRepository>((ref) async {
-  final isar = await ref.watch(isarProvider.future);
-  return ProfileRepository(isar);
-});
 
 class ProfileRepository {
   final Isar _isar;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:fitjourney/features/nutrition/viewmodel/nutrition_viewmodel.dart';
 import 'package:fitjourney/features/profile/view/notification_settings_screen.dart';
@@ -8,13 +8,13 @@ import 'widgets/profile_summary_card.dart';
 import 'widgets/daily_targets_card.dart';
 import 'widgets/app_settings_card.dart';
 
-class ProfileTab extends ConsumerWidget {
+class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(profileViewModelProvider);
-    final nutritionViewModel = ref.watch(nutritionViewModelProvider);
+  Widget build(BuildContext context) {
+    final viewModel = context.watch<ProfileViewModel>();
+    final nutritionViewModel = context.watch<NutritionViewModel>();
 
     return Scaffold(
       appBar: AppBar(

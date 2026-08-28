@@ -1,13 +1,6 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:fitjourney/models/food.dart';
 import 'package:fitjourney/models/daily_nutrition.dart';
-import 'package:fitjourney/core/di/isar_provider.dart';
-
-final nutritionRepositoryProvider = FutureProvider<NutritionRepository>((ref) async {
-  final isar = await ref.watch(isarProvider.future);
-  return NutritionRepository(isar);
-});
 
 class NutritionRepository {
   final Isar _isar;

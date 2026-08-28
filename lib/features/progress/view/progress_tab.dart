@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:fitjourney/features/progress/viewmodel/progress_viewmodel.dart';
 import 'package:fitjourney/features/progress/view/weekly_check_in_screen.dart';
 
@@ -8,12 +8,12 @@ import 'widgets/monthly_summary_card.dart';
 import 'widgets/weight_tracker_chart.dart';
 import 'widgets/achievements_list.dart';
 
-class ProgressTab extends ConsumerWidget {
+class ProgressTab extends StatelessWidget {
   const ProgressTab({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(progressViewModelProvider);
+  Widget build(BuildContext context) {
+    final viewModel = context.watch<ProgressViewModel>();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Progress Dashboard')),

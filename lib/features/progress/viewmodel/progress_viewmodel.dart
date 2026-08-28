@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 import 'package:fitjourney/models/weight_entry.dart';
 import 'package:fitjourney/models/achievement.dart';
 import 'package:fitjourney/features/progress/repository/progress_repository.dart';
@@ -58,14 +56,10 @@ class AchievementItem {
   });
 }
 
-final progressViewModelProvider = ChangeNotifierProvider<ProgressViewModel>((ref) {
-  return ProgressViewModel(ref);
-});
-
 class ProgressViewModel extends ChangeNotifier {
-  final Ref _ref;
+  final ProgressRepository _repository;
 
-  ProgressViewModel(this._ref) {
+  ProgressViewModel(this._repository) {
     _init();
   }
 
@@ -98,14 +92,13 @@ class ProgressViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final repository = await _ref.read(progressRepositoryProvider.future);
-      _weightHistory = await repository.getAllWeightEntries();
-      _stats = await _calculateStats(repository);
-      _monthlySummary = await _calculateMonthlySummary(repository);
-      _streakData = await _calculateStreak(repository);
-      _achievements = await _fetchAchievements(repository);
+      _weightHistory = await _repository.getAllWeightEntries();
+      _stats = await _calculateStats(_repository);
+      _monthlySummary = await _calculateMonthlySummary(_repository);
+      _streakData = await _calculateStreak(_repository);
+      _achievements = await _fetchAchievements(_repository);
       
-      await _evaluateAchievements(repository);
+      await _evaluateAchievements(_repository);
     } catch (e) {
       _error = e.toString();
     } finally {
@@ -118,11 +111,10 @@ class ProgressViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final repository = await _ref.read(progressRepositoryProvider.future);
       final entry = WeightEntry()
         ..date = DateTime.now()
         ..weight = weight;
-      await repository.saveWeightEntry(entry);
+      await _repository.saveWeightEntry(entry);
       
       await loadAllProgressData(); // Reload everything
     } catch (e) {

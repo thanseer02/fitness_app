@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:fitjourney/features/nutrition/viewmodel/nutrition_viewmodel.dart';
 import 'widgets/today_macros_card.dart';
 import 'widgets/meal_card.dart';
 
-class NutritionTab extends ConsumerWidget {
+class NutritionTab extends StatelessWidget {
   const NutritionTab({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(nutritionViewModelProvider);
+  Widget build(BuildContext context) {
+    final viewModel = context.watch<NutritionViewModel>();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Nutrition')),

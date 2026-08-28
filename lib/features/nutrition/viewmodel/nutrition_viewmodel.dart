@@ -1,31 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 import 'package:fitjourney/models/food.dart';
 import 'package:fitjourney/models/daily_nutrition.dart';
 import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
-import 'package:fitjourney/features/profile/repository/profile_repository.dart';
 import 'package:fitjourney/core/services/calorie_service.dart';
 import 'package:fitjourney/core/services/notification_service.dart';
 import 'package:fitjourney/features/nutrition/repository/nutrition_repository.dart';
 
-final nutritionViewModelProvider = ChangeNotifierProvider<NutritionViewModel>((ref) {
-  return NutritionViewModel(ref);
-});
-
 class NutritionViewModel extends ChangeNotifier {
-  final Ref _ref;
+  final NutritionRepository _repository;
+  final ProfileViewModel _profileViewModel;
   
-  NutritionViewModel(this._ref) {
+  NutritionViewModel(this._repository, this._profileViewModel) {
     _init();
     
-    _ref.listen(profileViewModelProvider, (previous, next) {
-      final profile = next.userProfile;
-      if (profile != null) {
-        _targets = CalorieService.calculateTargets(profile);
-        notifyListeners();
-      }
-    });
+    _profileViewModel.addListener(_onProfileUpdated);
+  }
+
+  void _onProfileUpdated() {
+    final profile = _profileViewModel.userProfile;
+    if (profile != null) {
+      _targets = CalorieService.calculateTargets(profile);
+      notifyListeners();
+    }
   }
 
   bool _isLoading = true;
@@ -91,24 +87,18 @@ class NutritionViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final profileViewModel = _ref.read(profileViewModelProvider);
-      var profile = profileViewModel.userProfile;
-      if (profile == null) {
-        final profileRepo = await _ref.read(profileRepositoryProvider.future);
-        profile = await profileRepo.getUserProfile();
-      }
+      var profile = _profileViewModel.userProfile;
       if (profile != null) {
         _targets = CalorieService.calculateTargets(profile);
       }
 
-      final repository = await _ref.read(nutritionRepositoryProvider.future);
-      await repository.seedFoods();
-      _availableFoods = await repository.getAllFoods();
+      await _repository.seedFoods();
+      _availableFoods = await _repository.getAllFoods();
 
       final now = DateTime.now();
       final today = DateTime(now.year, now.month, now.day);
 
-      var daily = await repository.getDailyNutrition(today);
+      var daily = await _repository.getDailyNutrition(today);
       if (daily == null) {
         daily = DailyNutrition()
           ..date = today
@@ -118,7 +108,7 @@ class NutritionViewModel extends ChangeNotifier {
             Meal()..type = 'Dinner',
             Meal()..type = 'Snack',
           ];
-        await repository.saveDailyNutrition(daily);
+        await _repository.saveDailyNutrition(daily);
       }
       _dailyNutrition = daily;
     } catch (e) {
@@ -161,8 +151,7 @@ class NutritionViewModel extends ChangeNotifier {
     notifyListeners();
     
     try {
-      final repository = await _ref.read(nutritionRepositoryProvider.future);
-      await repository.saveDailyNutrition(updatedDaily);
+      await _repository.saveDailyNutrition(updatedDaily);
       _dailyNutrition = updatedDaily;
       
       // Cancel protein reminder if target met

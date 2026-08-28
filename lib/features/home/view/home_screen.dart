@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:fitjourney/features/workout/view/workout_tab.dart';
 
 import 'package:fitjourney/features/nutrition/view/nutrition_tab.dart';

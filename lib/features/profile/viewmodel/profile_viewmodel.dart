@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 import 'package:fitjourney/models/user_profile.dart';
 import 'package:fitjourney/models/app_settings.dart';
 import 'package:fitjourney/models/notification_settings.dart';
 import 'package:fitjourney/features/profile/repository/profile_repository.dart';
 import 'package:fitjourney/core/services/notification_service.dart';
 
-final profileViewModelProvider = ChangeNotifierProvider<ProfileViewModel>((ref) {
-  return ProfileViewModel(ref);
-});
-
 class ProfileViewModel extends ChangeNotifier {
-  final Ref _ref;
+  final ProfileRepository _repository;
 
-  ProfileViewModel(this._ref) {
+  ProfileViewModel(this._repository) {
     _init();
   }
 
@@ -41,20 +35,19 @@ class ProfileViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final repository = await _ref.read(profileRepositoryProvider.future);
-      _userProfile = await repository.getUserProfile();
+      _userProfile = await _repository.getUserProfile();
 
-      var settings = await repository.getAppSettings(1);
+      var settings = await _repository.getAppSettings(1);
       if (settings == null) {
         settings = AppSettings(isDarkMode: false);
-        await repository.saveAppSettings(settings);
+        await _repository.saveAppSettings(settings);
       }
       _themeMode = settings.isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
-      var notifSettings = await repository.getNotificationSettings(1);
+      var notifSettings = await _repository.getNotificationSettings(1);
       if (notifSettings == null) {
         notifSettings = NotificationSettings();
-        await repository.saveNotificationSettings(notifSettings);
+        await _repository.saveNotificationSettings(notifSettings);
       }
       _notificationSettings = notifSettings;
       _applySettings(notifSettings);
@@ -71,8 +64,7 @@ class ProfileViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final repository = await _ref.read(profileRepositoryProvider.future);
-      await repository.saveUserProfile(profile);
+      await _repository.saveUserProfile(profile);
       _userProfile = profile;
     } catch (e) {
       _error = e.toString();
@@ -82,12 +74,32 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> createProfile({
+    required String name,
+    required int age,
+    required double height,
+    required double currentWeight,
+    required double targetWeight,
+    required Goal goal,
+    required ActivityLevel activityLevel,
+  }) async {
+    final profile = UserProfile()
+      ..name = name
+      ..age = age
+      ..height = height
+      ..currentWeight = currentWeight
+      ..targetWeight = targetWeight
+      ..goal = goal
+      ..activityLevel = activityLevel;
+    
+    await saveProfile(profile);
+  }
+
   Future<void> toggleTheme(bool isDark) async {
     try {
-      final repository = await _ref.read(profileRepositoryProvider.future);
-      var settings = await repository.getAppSettings(1) ?? AppSettings();
+      var settings = await _repository.getAppSettings(1) ?? AppSettings();
       settings.isDarkMode = isDark;
-      await repository.saveAppSettings(settings);
+      await _repository.saveAppSettings(settings);
       _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
       notifyListeners();
     } catch (e) {
@@ -98,9 +110,8 @@ class ProfileViewModel extends ChangeNotifier {
 
   Future<void> updateNotificationSettings(NotificationSettings newSettings) async {
     try {
-      final repository = await _ref.read(profileRepositoryProvider.future);
       newSettings.id = 1;
-      await repository.saveNotificationSettings(newSettings);
+      await _repository.saveNotificationSettings(newSettings);
       _notificationSettings = newSettings;
       _applySettings(newSettings);
       notifyListeners();

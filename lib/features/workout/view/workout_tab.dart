@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:fitjourney/features/workout/viewmodel/workout_viewmodel.dart';
 import 'package:fitjourney/features/workout/view/active_workout_screen.dart';
 import 'widgets/workout_overview_view.dart';
 
-class WorkoutTab extends ConsumerWidget {
+class WorkoutTab extends StatelessWidget {
   const WorkoutTab({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(workoutViewModelProvider);
+  Widget build(BuildContext context) {
+    final viewModel = context.watch<WorkoutViewModel>();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Today\'s Workout')),
