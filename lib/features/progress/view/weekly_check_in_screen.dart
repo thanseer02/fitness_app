@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fitjourney/models/weight_entry.dart';
 import 'package:fitjourney/features/progress/viewmodel/progress_viewmodel.dart';
 
 class WeeklyCheckInScreen extends StatefulWidget {

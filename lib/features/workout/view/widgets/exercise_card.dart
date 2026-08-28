@@ -27,7 +27,7 @@ class ExerciseCard extends StatelessWidget {
       child: AppCard(
         onTap: onTap,
         padding: const EdgeInsets.all(AppSpacing.sm),
-        color: isCompleted ? AppColors.secondary.withOpacity(0.05) : null,
+        color: isCompleted ? AppColors.secondary.withValues(alpha: 0.05) : null,
         child: Row(
           children: [
             // Image
@@ -38,10 +38,10 @@ class ExerciseCard extends StatelessWidget {
                 width: 70,
                 height: 70,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
+                errorBuilder: (_, _, _) => Container(
                   width: 70,
                   height: 70,
-                  color: theme.colorScheme.surfaceVariant,
+                  color: theme.colorScheme.surfaceContainerHighest,
                   child: const Icon(Icons.fitness_center),
                 ),
               ),
@@ -58,13 +58,13 @@ class ExerciseCard extends StatelessWidget {
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       decoration: isCompleted ? TextDecoration.lineThrough : null,
-                      color: isCompleted ? theme.colorScheme.onSurface.withOpacity(0.5) : null,
+                      color: isCompleted ? theme.colorScheme.onSurface.withValues(alpha: 0.5) : null,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   StatChip(
                     label: '${exercise.sets} sets × ${exercise.reps} reps',
-                    color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+                    color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
                   ),
                 ],
               ),

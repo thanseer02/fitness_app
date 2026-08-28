@@ -81,11 +81,10 @@ class HomeTab extends StatelessWidget {
       }
     }
 
-    final isUp = diff > 0;
     final isDown = diff < 0;
 
     return AppCard(
-      color: theme.colorScheme.primaryContainer.withOpacity(0.4),
+      color: theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
       padding: const EdgeInsets.all(AppSpacing.lg),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,7 +99,7 @@ class HomeTab extends StatelessWidget {
                 textBaseline: TextBaseline.alphabetic,
                 children: [
                   Text(
-                    '${currentWeight.toStringAsFixed(1)}',
+                    currentWeight.toStringAsFixed(1),
                     style: theme.textTheme.displayMedium?.copyWith(
                       color: theme.colorScheme.onSurface,
                     ),
@@ -115,7 +114,7 @@ class HomeTab extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: isDown ? AppColors.secondary.withOpacity(0.2) : AppColors.error.withOpacity(0.2),
+                color: isDown ? AppColors.secondary.withValues(alpha: 0.2) : AppColors.error.withValues(alpha: 0.2),
                 borderRadius: AppRadius.roundRadius,
               ),
               child: Row(
@@ -162,7 +161,7 @@ class HomeTab extends StatelessWidget {
           bool hasWeight = progressVM.weightHistory.any((w) => w.date.day == dayDate.day && w.date.month == dayDate.month);
           
           IconData iconData = Icons.circle_outlined;
-          Color iconColor = theme.colorScheme.onSurfaceVariant.withOpacity(0.3);
+          Color iconColor = theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.3);
 
           if (hasWorkout) {
             iconData = Icons.check_circle;

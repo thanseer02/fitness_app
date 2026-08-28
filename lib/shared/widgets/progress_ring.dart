@@ -22,7 +22,7 @@ class ProgressRing extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final activeColor = color ?? theme.colorScheme.primary;
-    final bgColor = backgroundColor ?? theme.colorScheme.surfaceVariant;
+    final bgColor = backgroundColor ?? theme.colorScheme.surfaceContainerHighest;
 
     return SizedBox(
       width: size,

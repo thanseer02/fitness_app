@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fitjourney/features/workout/viewmodel/workout_viewmodel.dart';
-import 'package:fitjourney/features/workout/view/active_workout_screen.dart';
 import 'widgets/workout_overview_view.dart';
 
 class WorkoutTab extends StatelessWidget {

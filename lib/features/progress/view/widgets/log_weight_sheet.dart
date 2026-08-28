@@ -66,7 +66,7 @@ class _LogWeightSheetState extends State<LogWeightSheet> {
             height: 4,
             margin: const EdgeInsets.only(bottom: AppSpacing.lg),
             decoration: BoxDecoration(
-              color: theme.colorScheme.onSurfaceVariant.withOpacity(0.4),
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
               borderRadius: AppRadius.roundRadius,
             ),
           ),
@@ -87,7 +87,7 @@ class _LogWeightSheetState extends State<LogWeightSheet> {
                   decoration: InputDecoration(
                     hintText: '0.0',
                     border: InputBorder.none,
-                    hintStyle: theme.textTheme.displayMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant.withOpacity(0.3)),
+                    hintStyle: theme.textTheme.displayMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.3)),
                   ),
                   autofocus: true,
                 ),

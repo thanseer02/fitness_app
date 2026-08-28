@@ -46,7 +46,7 @@ class FoodSearchSheet extends StatelessWidget {
               height: 4,
               margin: const EdgeInsets.only(bottom: AppSpacing.lg),
               decoration: BoxDecoration(
-                color: theme.colorScheme.onSurfaceVariant.withOpacity(0.4),
+                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                 borderRadius: AppRadius.roundRadius,
               ),
             ),
@@ -57,7 +57,7 @@ class FoodSearchSheet extends StatelessWidget {
           // Search Bar
           Container(
             decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+              color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
               borderRadius: AppRadius.mdRadius,
             ),
             child: TextField(
@@ -76,7 +76,7 @@ class FoodSearchSheet extends StatelessWidget {
           FilterChip(
             label: const Text('Hostel Friendly'),
             selected: viewModel.hostelFriendlyOnly,
-            selectedColor: AppColors.secondary.withOpacity(0.2),
+            selectedColor: AppColors.secondary.withValues(alpha: 0.2),
             checkmarkColor: AppColors.secondary,
             onSelected: (val) => context.read<NutritionViewModel>().toggleHostelFriendly(val),
           ),

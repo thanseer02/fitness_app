@@ -90,9 +90,9 @@ class TodayMacrosCard extends StatelessWidget {
           ),
         ),
         Text(
-          '${target.toStringAsFixed(0)}',
+          target.toStringAsFixed(0),
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
+            color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
           ),
         ),
       ],

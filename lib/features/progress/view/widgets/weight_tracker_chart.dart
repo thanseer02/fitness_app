@@ -65,7 +65,7 @@ class WeightTrackerChart extends StatelessWidget {
             drawVerticalLine: false,
             horizontalInterval: 5,
             getDrawingHorizontalLine: (value) => FlLine(
-              color: theme.colorScheme.surfaceVariant,
+              color: theme.colorScheme.surfaceContainerHighest,
               strokeWidth: 1,
               dashArray: [5, 5],
             ),
@@ -126,8 +126,8 @@ class WeightTrackerChart extends StatelessWidget {
                 show: true,
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.secondary.withOpacity(0.3),
-                    AppColors.secondary.withOpacity(0.0),
+                    AppColors.secondary.withValues(alpha: 0.3),
+                    AppColors.secondary.withValues(alpha: 0.0),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,

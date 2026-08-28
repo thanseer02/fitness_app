@@ -130,7 +130,7 @@ class _ActiveWorkoutScreenState extends State<ActiveWorkoutScreen> {
                 children: [
                   // Header Card
                   AppCard(
-                    color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.4),
+                    color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.4),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -170,7 +170,7 @@ class _ActiveWorkoutScreenState extends State<ActiveWorkoutScreen> {
                 color: Theme.of(context).colorScheme.surface,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     offset: const Offset(0, -4),
                     blurRadius: 10,
                   ),

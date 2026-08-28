@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fitjourney/features/progress/viewmodel/progress_viewmodel.dart';
+import 'package:fitjourney/core/theme/app_colors.dart';
+import 'package:fitjourney/core/theme/app_constants.dart';
+import 'package:fitjourney/shared/widgets/app_card.dart';
 
 class AchievementsList extends StatelessWidget {
   final List<AchievementItem> achievements;
@@ -9,7 +12,7 @@ class AchievementsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 140,
+      height: 130,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: achievements.length,
@@ -17,31 +20,30 @@ class AchievementsList extends StatelessWidget {
           final ach = achievements[index];
           return Container(
             width: 120,
-            margin: const EdgeInsets.only(right: 12),
-            child: Card(
-              color: ach.isUnlocked ? Colors.amber.shade100 : Colors.grey.shade200,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      ach.isUnlocked ? Icons.emoji_events : Icons.lock,
-                      color: ach.isUnlocked ? Colors.amber.shade800 : Colors.grey,
-                      size: 40,
+            margin: const EdgeInsets.only(right: AppSpacing.md),
+            child: AppCard(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              color: ach.isUnlocked ? AppColors.secondary.withValues(alpha: 0.15) : Theme.of(context).colorScheme.surfaceContainerHighest,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    ach.isUnlocked ? Icons.emoji_events : Icons.lock,
+                    color: ach.isUnlocked ? AppColors.secondary : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                    size: 36,
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  Text(
+                    ach.title,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: ach.isUnlocked ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      ach.title,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                        color: ach.isUnlocked ? Colors.black87 : Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );

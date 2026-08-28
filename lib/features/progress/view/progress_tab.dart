@@ -141,13 +141,13 @@ class ProgressTab extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.15),
+                  color: color.withValues(alpha: 0.15),
                   borderRadius: AppRadius.smRadius,
                 ),
                 child: Icon(icon, color: color, size: 20),
               ),
               const Spacer(),
-              Icon(Icons.trending_up, color: theme.colorScheme.onSurfaceVariant.withOpacity(0.5), size: 16),
+              Icon(Icons.trending_up, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5), size: 16),
             ],
           ),
           const Spacer(),

@@ -87,7 +87,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
             height: 4,
             margin: const EdgeInsets.only(bottom: AppSpacing.lg),
             decoration: BoxDecoration(
-              color: theme.colorScheme.onSurfaceVariant.withOpacity(0.4),
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
               borderRadius: AppRadius.roundRadius,
             ),
           ),
@@ -102,10 +102,10 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
+                  errorBuilder: (_, _, _) => Container(
                     width: 100,
                     height: 100,
-                    color: theme.colorScheme.surfaceVariant,
+                    color: theme.colorScheme.surfaceContainerHighest,
                     child: const Icon(Icons.fitness_center, size: 40),
                   ),
                 ),
@@ -231,7 +231,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: AppRadius.smRadius,
       ),
       child: TextFormField(

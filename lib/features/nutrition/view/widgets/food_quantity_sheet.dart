@@ -51,7 +51,7 @@ class _FoodQuantitySheetState extends State<FoodQuantitySheet> {
             height: 4,
             margin: const EdgeInsets.only(bottom: AppSpacing.lg),
             decoration: BoxDecoration(
-              color: theme.colorScheme.onSurfaceVariant.withOpacity(0.4),
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
               borderRadius: AppRadius.roundRadius,
             ),
           ),
@@ -71,7 +71,7 @@ class _FoodQuantitySheetState extends State<FoodQuantitySheet> {
               Column(
                 children: [
                   Text(
-                    '${_quantity.toStringAsFixed(0)}',
+                    _quantity.toStringAsFixed(0),
                     style: theme.textTheme.displaySmall?.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold),
                   ),
                   Text('grams', style: theme.textTheme.labelMedium),
