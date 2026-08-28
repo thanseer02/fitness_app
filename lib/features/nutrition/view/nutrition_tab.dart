@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fitjourney/features/nutrition/viewmodel/nutrition_viewmodel.dart';
 import 'widgets/today_macros_card.dart';
-import 'widgets/meal_card.dart';
-
+import 'widgets/meal_section.dart';
 class NutritionTab extends StatelessWidget {
   const NutritionTab({super.key});
 
@@ -33,7 +32,7 @@ class NutritionTab extends StatelessWidget {
             children: [
               TodayMacrosCard(viewModel: viewModel),
               const SizedBox(height: 16),
-              ...daily.meals.map((meal) => MealCard(meal: meal)),
+              ...daily.meals.map((meal) => MealSection(meal: meal)),
             ],
           );
         },

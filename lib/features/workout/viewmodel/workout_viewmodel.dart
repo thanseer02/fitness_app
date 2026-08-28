@@ -51,18 +51,7 @@ class WorkoutViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> finishActiveWorkout(Workout workout, DateTime startTime, Map<int, List<bool>> completedSets) async {
-    final exercises = workout.exercises.toList();
-    final List<String> sessionLogs = [];
-
-    for (int i = 0; i < exercises.length; i++) {
-      final ex = exercises[i];
-      final completedCount = completedSets[i]!.where((completed) => completed).length;
-      if (completedCount > 0) {
-        sessionLogs.add('${ex.name}: $completedCount / ${ex.sets} sets');
-      }
-    }
-
+  Future<void> finishActiveWorkout(Workout workout, DateTime startTime, List<String> sessionLogs) async {
     final duration = DateTime.now().difference(startTime).inSeconds;
 
     final session = WorkoutSession()
