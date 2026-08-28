@@ -46,6 +46,7 @@ Future<void> main() async {
       NotificationSettingsSchema,
       AppSettingsSchema,
       AchievementSchema,
+      WorkoutOverrideSchema,
     ],
     directory: dir.path,
   );

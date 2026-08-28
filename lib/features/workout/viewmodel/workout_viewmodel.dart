@@ -16,6 +16,12 @@ class WorkoutViewModel extends ChangeNotifier {
   Workout? _todaysWorkout;
   Workout? get todaysWorkout => _todaysWorkout;
 
+  bool _isCustomWorkout = false;
+  bool get isCustomWorkout => _isCustomWorkout;
+
+  List<Workout> _availableWorkouts = [];
+  List<Workout> get availableWorkouts => _availableWorkouts;
+
   String? _error;
   String? get error => _error;
 
@@ -24,12 +30,29 @@ class WorkoutViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       await _repository.seedWorkouts();
+      _availableWorkouts = await _repository.getAllWorkouts();
       
-      final today = DateTime.now().weekday;
-      const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-      final dayName = days[today - 1];
+      final now = DateTime.now();
+      final override = await _repository.getWorkoutOverride(now);
+      
+      if (override != null) {
+        _isCustomWorkout = true;
+        if (override.workoutId == null) {
+          _todaysWorkout = null; // Explicit Rest Day
+        } else {
+          _todaysWorkout = _availableWorkouts.cast<Workout?>().firstWhere(
+            (w) => w?.id == override.workoutId,
+            orElse: () => null,
+          );
+        }
+      } else {
+        _isCustomWorkout = false;
+        final today = now.weekday;
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        final dayName = days[today - 1];
 
-      _todaysWorkout = await _repository.getWorkoutByDay(dayName);
+        _todaysWorkout = await _repository.getWorkoutByDay(dayName);
+      }
     } catch (e) {
       _error = e.toString();
     } finally {
@@ -61,5 +84,18 @@ class WorkoutViewModel extends ChangeNotifier {
       ..durationInSeconds = duration;
 
     await completeWorkout(session);
+  }
+
+  Future<void> changeWorkout(int? newWorkoutId) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      await _repository.setWorkoutOverride(DateTime.now(), newWorkoutId);
+      await _init(); // Re-fetch data
+    } catch (e) {
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

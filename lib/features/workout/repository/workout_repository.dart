@@ -2,6 +2,7 @@ import 'package:isar/isar.dart';
 import 'package:fitjourney/models/workout.dart';
 import 'package:fitjourney/models/exercise.dart';
 import 'package:fitjourney/models/workout_session.dart';
+import 'package:fitjourney/models/workout_override.dart';
 
 class WorkoutRepository {
   final Isar _isar;
@@ -61,5 +62,28 @@ class WorkoutRepository {
     await _isar.writeTxn(() async {
       await _isar.workoutSessions.put(session);
     });
+  }
+
+  Future<WorkoutOverride?> getWorkoutOverride(DateTime date) async {
+    final midnight = DateTime(date.year, date.month, date.day);
+    return await _isar.workoutOverrides.filter().dateEqualTo(midnight).findFirst();
+  }
+
+  Future<void> setWorkoutOverride(DateTime date, int? workoutId) async {
+    final midnight = DateTime(date.year, date.month, date.day);
+    await _isar.writeTxn(() async {
+      var override = await _isar.workoutOverrides.filter().dateEqualTo(midnight).findFirst();
+      override ??= WorkoutOverride()..date = midnight;
+      override.workoutId = workoutId;
+      await _isar.workoutOverrides.put(override);
+    });
+  }
+
+  Future<List<Workout>> getAllWorkouts() async {
+    final workouts = await _isar.workouts.where().findAll();
+    for (var w in workouts) {
+      await w.exercises.load();
+    }
+    return workouts;
   }
 }
