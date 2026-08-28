@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fitjourney/features/profile/view/onboarding_screen.dart';
 import 'package:fitjourney/features/home/view/home_screen.dart';
-import 'package:fitjourney/features/profile/viewmodel/user_profile_provider.dart';
+import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
 
 import 'package:fitjourney/core/services/notification_service.dart';
-import 'package:fitjourney/features/profile/viewmodel/theme_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,12 +23,11 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profileState = ref.watch(userProfileNotifierProvider);
-    final themeState = ref.watch(themeProvider);
+    final viewModel = ref.watch(profileViewModelProvider);
 
     return MaterialApp(
       title: 'FitJourney',
-      themeMode: themeState.value ?? ThemeMode.light,
+      themeMode: viewModel.themeMode,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, brightness: Brightness.light),
         useMaterial3: true,
@@ -38,23 +36,28 @@ class MyApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, brightness: Brightness.dark),
         useMaterial3: true,
       ),
-      home: profileState.when(
-        data: (profile) {
+      home: Builder(
+        builder: (context) {
+          if (viewModel.isLoading) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          if (viewModel.error != null) {
+            return Scaffold(
+              body: Center(
+                child: Text('Error initializing app: ${viewModel.error}'),
+              ),
+            );
+          }
+          final profile = viewModel.userProfile;
           if (profile == null) {
             return const OnboardingScreen();
           }
           return const HomeScreen();
         },
-        loading: () => const Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-        error: (e, st) => Scaffold(
-          body: Center(
-            child: Text('Error initializing app: $e'),
-          ),
-        ),
       ),
     );
   }

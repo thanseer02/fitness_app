@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fitjourney/models/user_profile.dart';
-import 'package:fitjourney/features/profile/viewmodel/user_profile_provider.dart';
+import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:fitjourney/features/home/view/home_screen.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
@@ -35,7 +35,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         ..goal = _goal
         ..activityLevel = _activityLevel;
 
-      await ref.read(userProfileNotifierProvider.notifier).saveProfile(profile);
+      await ref.read(profileViewModelProvider).saveProfile(profile);
 
       if (mounted) {
         Navigator.of(context).pushReplacement(

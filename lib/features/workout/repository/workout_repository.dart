@@ -2,11 +2,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:fitjourney/models/workout.dart';
 import 'package:fitjourney/models/exercise.dart';
+import 'package:fitjourney/models/workout_session.dart';
 import 'package:fitjourney/core/di/isar_provider.dart';
 
-class WorkoutSeedService {
-  static Future<void> seedWorkouts(Isar isar) async {
-    final count = await isar.workouts.count();
+final workoutRepositoryProvider = FutureProvider<WorkoutRepository>((ref) async {
+  final isar = await ref.watch(isarProvider.future);
+  return WorkoutRepository(isar);
+});
+
+class WorkoutRepository {
+  final Isar _isar;
+  WorkoutRepository(this._isar);
+
+  Future<void> seedWorkouts() async {
+    final count = await _isar.workouts.count();
     if (count > 0) return; // Already seeded
 
     // Create default exercises
@@ -23,15 +32,15 @@ class WorkoutSeedService {
 
     final shoulderPress = Exercise()..name = 'Shoulder Press'..muscleGroup = 'Shoulders'..imagePath = 'assets/exercises/shoulder_press.webp'..sets = 4..reps = '8-12';
 
-    await isar.writeTxn(() async {
-      await isar.exercises.putAll([benchPress, inclineDbPress, cableFly, tricepPushdown, latPulldown, barbellRow, squat, legExtension, shoulderPress]);
+    await _isar.writeTxn(() async {
+      await _isar.exercises.putAll([benchPress, inclineDbPress, cableFly, tricepPushdown, latPulldown, barbellRow, squat, legExtension, shoulderPress]);
 
       final wMon = Workout()..day = 'Monday'..name = 'Chest & Triceps';
       final wTue = Workout()..day = 'Tuesday'..name = 'Back & Biceps';
       final wThu = Workout()..day = 'Thursday'..name = 'Shoulders & Abs';
       final wFri = Workout()..day = 'Friday'..name = 'Legs';
       
-      await isar.workouts.putAll([wMon, wTue, wThu, wFri]);
+      await _isar.workouts.putAll([wMon, wTue, wThu, wFri]);
       
       wMon.exercises.addAll([benchPress, inclineDbPress, cableFly, tricepPushdown]);
       await wMon.exercises.save();
@@ -46,19 +55,18 @@ class WorkoutSeedService {
       await wFri.exercises.save();
     });
   }
-}
 
-final todaysWorkoutProvider = FutureProvider<Workout?>((ref) async {
-  final isar = await ref.watch(isarProvider.future);
-  await WorkoutSeedService.seedWorkouts(isar);
-
-  final today = DateTime.now().weekday; // 1=Mon, 2=Tue...
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  final dayName = days[today - 1];
-
-  final workout = await isar.workouts.filter().dayEqualTo(dayName).findFirst();
-  if (workout != null) {
-    await workout.exercises.load();
+  Future<Workout?> getWorkoutByDay(String dayName) async {
+    final workout = await _isar.workouts.filter().dayEqualTo(dayName).findFirst();
+    if (workout != null) {
+      await workout.exercises.load();
+    }
+    return workout;
   }
-  return workout;
-});
+
+  Future<void> saveWorkoutSession(WorkoutSession session) async {
+    await _isar.writeTxn(() async {
+      await _isar.workoutSessions.put(session);
+    });
+  }
+}

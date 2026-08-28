@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fitjourney/models/weight_entry.dart';
-import 'package:fitjourney/core/di/isar_provider.dart';
-import 'package:fitjourney/features/profile/viewmodel/user_profile_provider.dart';
-import 'package:fitjourney/features/progress/viewmodel/progress_provider.dart';
+import 'package:fitjourney/features/progress/viewmodel/progress_viewmodel.dart';
 
 class WeeklyCheckInScreen extends ConsumerStatefulWidget {
   const WeeklyCheckInScreen({super.key});
@@ -21,28 +19,7 @@ class _WeeklyCheckInScreenState extends ConsumerState<WeeklyCheckInScreen> {
 
     setState(() => _isSaving = true);
 
-    final isar = await ref.read(isarProvider.future);
-    
-    // Save WeightEntry
-    final entry = WeightEntry()
-      ..date = DateTime.now()
-      ..weight = _weight;
-
-    await isar.writeTxn(() async {
-      await isar.weightEntrys.put(entry);
-    });
-
-    // Update UserProfile current weight
-    final profileNotifier = ref.read(userProfileNotifierProvider.notifier);
-    final profile = ref.read(userProfileNotifierProvider).value;
-    
-    if (profile != null) {
-      profile.currentWeight = _weight;
-      await profileNotifier.saveProfile(profile);
-    }
-
-    // Refresh history provider
-    ref.invalidate(weightHistoryProvider);
+    await ref.read(progressViewModelProvider).logWeight(_weight);
 
     if (mounted) {
       Navigator.of(context).pop();

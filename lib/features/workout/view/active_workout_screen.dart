@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fitjourney/models/workout.dart';
 import 'package:fitjourney/models/workout_session.dart';
-import 'package:fitjourney/core/di/isar_provider.dart';
+import 'package:fitjourney/features/workout/viewmodel/workout_viewmodel.dart';
 import 'package:fitjourney/shared/widgets/rest_timer_dialog.dart';
 
 class ActiveWorkoutScreen extends ConsumerStatefulWidget {
@@ -63,10 +63,8 @@ class _ActiveWorkoutScreenState extends ConsumerState<ActiveWorkoutScreen> {
       ..completedSetsReps = sessionLogs
       ..durationInSeconds = duration;
 
-    final isar = await ref.read(isarProvider.future);
-    await isar.writeTxn(() async {
-      await isar.workoutSessions.put(session);
-    });
+    final viewModel = ref.read(workoutViewModelProvider);
+    await viewModel.completeWorkout(session);
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

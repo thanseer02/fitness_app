@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fitjourney/models/food.dart';
-import 'package:fitjourney/features/nutrition/viewmodel/nutrition_provider.dart';
+import 'package:fitjourney/features/nutrition/viewmodel/nutrition_viewmodel.dart';
 
 class FoodSearchScreen extends ConsumerStatefulWidget {
   final String mealType;
@@ -25,7 +25,7 @@ class _FoodSearchScreenState extends ConsumerState<FoodSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final foodsState = ref.watch(foodsProvider);
+    final viewModel = ref.watch(nutritionViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text('Add to ${widget.mealType}')),
@@ -49,38 +49,44 @@ class _FoodSearchScreenState extends ConsumerState<FoodSearchScreen> {
           ),
           const Divider(),
           Expanded(
-            child: foodsState.when(
-              data: (foods) {
-                var filtered = foods.where((f) => f.name.toLowerCase().contains(_searchQuery)).toList();
-                if (_hostelFriendlyOnly) {
-                  filtered = filtered.where((f) => f.isHostelFriendly).toList();
-                }
-
-                if (filtered.isEmpty) {
-                  return const Center(child: Text('No foods found.'));
-                }
-
-                return ListView.builder(
-                  itemCount: filtered.length,
-                  itemBuilder: (context, index) {
-                    final food = filtered[index];
-                    return ListTile(
-                      title: Text(food.name),
-                      subtitle: Text('${food.calories} kcal | ${food.protein}g P | ${food.carbs}g C | ${food.fat}g F (per 100g)'),
-                      trailing: food.isHostelFriendly 
-                          ? const Icon(Icons.check_circle, color: Colors.green, size: 16) 
-                          : null,
-                      onTap: () => _showAddDialog(food),
-                    );
-                  },
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, st) => Center(child: Text('Error loading foods: $e')),
-            ),
+            child: _buildFoodList(viewModel),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildFoodList(NutritionViewModel viewModel) {
+    if (viewModel.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    
+    if (viewModel.error != null) {
+      return Center(child: Text('Error loading foods: ${viewModel.error}'));
+    }
+
+    var filtered = viewModel.availableFoods.where((f) => f.name.toLowerCase().contains(_searchQuery)).toList();
+    if (_hostelFriendlyOnly) {
+      filtered = filtered.where((f) => f.isHostelFriendly).toList();
+    }
+
+    if (filtered.isEmpty) {
+      return const Center(child: Text('No foods found.'));
+    }
+
+    return ListView.builder(
+      itemCount: filtered.length,
+      itemBuilder: (context, index) {
+        final food = filtered[index];
+        return ListTile(
+          title: Text(food.name),
+          subtitle: Text('${food.calories} kcal | ${food.protein}g P | ${food.carbs}g C | ${food.fat}g F (per 100g)'),
+          trailing: food.isHostelFriendly 
+              ? const Icon(Icons.check_circle, color: Colors.green, size: 16) 
+              : null,
+          onTap: () => _showAddDialog(food),
+        );
+      },
     );
   }
 }
@@ -133,7 +139,7 @@ class _AddFoodDialogState extends ConsumerState<_AddFoodDialog> {
         ElevatedButton(
           onPressed: () async {
             if (_quantity > 0) {
-              await ref.read(dailyNutritionProvider.notifier).addFood(widget.mealType, widget.food, _quantity);
+              await ref.read(nutritionViewModelProvider).addFood(widget.mealType, widget.food, _quantity);
               if (!context.mounted) return;
               Navigator.of(context).pop(); // pop dialog
               Navigator.of(context).pop(); // pop search screen

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fitjourney/features/profile/viewmodel/user_profile_provider.dart';
+import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:fitjourney/features/workout/view/workout_tab.dart';
 
 import 'package:fitjourney/features/nutrition/view/nutrition_tab.dart';
-import 'package:fitjourney/features/nutrition/viewmodel/nutrition_provider.dart';
+import 'package:fitjourney/features/nutrition/viewmodel/nutrition_viewmodel.dart';
 import 'package:fitjourney/features/progress/view/progress_tab.dart';
 import 'package:fitjourney/features/profile/view/notification_settings_screen.dart';
-import 'package:fitjourney/features/profile/viewmodel/theme_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -50,8 +49,8 @@ class _ProfileTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profileState = ref.watch(userProfileNotifierProvider);
-    final targets = ref.watch(macroTargetsProvider);
+    final viewModel = ref.watch(profileViewModelProvider);
+    final nutritionViewModel = ref.watch(nutritionViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -67,11 +66,20 @@ class _ProfileTab extends ConsumerWidget {
           ),
         ],
       ),
-      body: profileState.when(
-        data: (profile) {
+      body: Builder(
+        builder: (context) {
+          if (viewModel.isLoading || nutritionViewModel.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (viewModel.error != null) {
+            return Center(child: Text('Error: ${viewModel.error}'));
+          }
+          final profile = viewModel.userProfile;
           if (profile == null) {
             return const Center(child: Text('No profile found.'));
           }
+          final targets = nutritionViewModel.targets;
+
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
@@ -121,14 +129,13 @@ class _ProfileTab extends ConsumerWidget {
                       const SizedBox(height: 8),
                       Consumer(
                         builder: (context, ref, child) {
-                          final themeState = ref.watch(themeProvider);
-                          final isDark = themeState.value == ThemeMode.dark;
+                          final isDark = ref.watch(profileViewModelProvider).themeMode == ThemeMode.dark;
                           return SwitchListTile(
                             contentPadding: EdgeInsets.zero,
                             title: const Text('Dark Mode'),
                             value: isDark,
                             onChanged: (val) {
-                              ref.read(themeProvider.notifier).toggleTheme(val);
+                              ref.read(profileViewModelProvider).toggleTheme(val);
                             },
                           );
                         },
@@ -140,8 +147,6 @@ class _ProfileTab extends ConsumerWidget {
             ],
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, st) => Center(child: Text('Error: $e')),
       ),
     );
   }
