@@ -2,8 +2,10 @@ import 'package:isar/isar.dart';
 import 'package:fitjourney/models/workout.dart';
 import 'package:fitjourney/models/exercise.dart';
 import 'package:fitjourney/models/workout_session.dart';
+import 'package:fitjourney/models/workout_session.dart';
 import 'package:fitjourney/models/workout_override.dart';
 import 'package:fitjourney/models/missed_workout.dart';
+import 'package:fitjourney/models/muscle_group.dart';
 
 class WorkoutHistoryItem {
   final WorkoutSession session;
@@ -21,18 +23,18 @@ class WorkoutRepository {
     if (count > 0) return; // Already seeded
 
     // Create default exercises
-    final benchPress = Exercise()..name = 'Bench Press'..muscleGroup = 'Chest'..imagePath = 'assets/exercises/bench_press.webp'..sets = 4..reps = '8-12';
-    final inclineDbPress = Exercise()..name = 'Incline DB Press'..muscleGroup = 'Chest'..imagePath = 'assets/exercises/bench_press.webp'..sets = 3..reps = '10-12';
-    final cableFly = Exercise()..name = 'Cable Fly'..muscleGroup = 'Chest'..imagePath = 'assets/exercises/bench_press.webp'..sets = 3..reps = '12-15';
-    final tricepPushdown = Exercise()..name = 'Tricep Pushdown'..muscleGroup = 'Triceps'..imagePath = 'assets/exercises/bench_press.webp'..sets = 3..reps = '10-12';
+    final benchPress = Exercise()..name = 'Bench Press'..muscleGroup = MuscleGroup.chest..imagePath = 'assets/exercises/bench_press.webp'..sets = 4..reps = '8-12';
+    final inclineDbPress = Exercise()..name = 'Incline DB Press'..muscleGroup = MuscleGroup.chest..imagePath = 'assets/exercises/bench_press.webp'..sets = 3..reps = '10-12';
+    final cableFly = Exercise()..name = 'Cable Fly'..muscleGroup = MuscleGroup.chest..imagePath = 'assets/exercises/bench_press.webp'..sets = 3..reps = '12-15';
+    final tricepPushdown = Exercise()..name = 'Tricep Pushdown'..muscleGroup = MuscleGroup.triceps..imagePath = 'assets/exercises/bench_press.webp'..sets = 3..reps = '10-12';
     
-    final latPulldown = Exercise()..name = 'Lat Pulldown'..muscleGroup = 'Back'..imagePath = 'assets/exercises/lat_pulldown.webp'..sets = 4..reps = '8-12';
-    final barbellRow = Exercise()..name = 'Barbell Row'..muscleGroup = 'Back'..imagePath = 'assets/exercises/lat_pulldown.webp'..sets = 3..reps = '8-12';
+    final latPulldown = Exercise()..name = 'Lat Pulldown'..muscleGroup = MuscleGroup.back..imagePath = 'assets/exercises/lat_pulldown.webp'..sets = 4..reps = '8-12';
+    final barbellRow = Exercise()..name = 'Barbell Row'..muscleGroup = MuscleGroup.back..imagePath = 'assets/exercises/lat_pulldown.webp'..sets = 3..reps = '8-12';
     
-    final squat = Exercise()..name = 'Squat'..muscleGroup = 'Legs'..imagePath = 'assets/exercises/squat.webp'..sets = 4..reps = '6-10';
-    final legExtension = Exercise()..name = 'Leg Extension'..muscleGroup = 'Legs'..imagePath = 'assets/exercises/squat.webp'..sets = 3..reps = '12-15';
+    final squat = Exercise()..name = 'Squat'..muscleGroup = MuscleGroup.legs..imagePath = 'assets/exercises/squat.webp'..sets = 4..reps = '6-10';
+    final legExtension = Exercise()..name = 'Leg Extension'..muscleGroup = MuscleGroup.legs..imagePath = 'assets/exercises/squat.webp'..sets = 3..reps = '12-15';
 
-    final shoulderPress = Exercise()..name = 'Shoulder Press'..muscleGroup = 'Shoulders'..imagePath = 'assets/exercises/shoulder_press.webp'..sets = 4..reps = '8-12';
+    final shoulderPress = Exercise()..name = 'Shoulder Press'..muscleGroup = MuscleGroup.shoulders..imagePath = 'assets/exercises/shoulder_press.webp'..sets = 4..reps = '8-12';
 
     await _isar.writeTxn(() async {
       await _isar.exercises.putAll([benchPress, inclineDbPress, cableFly, tricepPushdown, latPulldown, barbellRow, squat, legExtension, shoulderPress]);
@@ -85,6 +87,30 @@ class WorkoutRepository {
       override.workoutId = workoutId;
       await _isar.workoutOverrides.put(override);
     });
+  }
+
+  Future<List<Exercise>> getExercisesByMuscleGroups(List<MuscleGroup> groups) async {
+    if (groups.isEmpty) return [];
+    
+    // Isar workaround for OR enum queries
+    final allExercises = await _isar.exercises.where().findAll();
+    return allExercises.where((e) => groups.contains(e.muscleGroup)).toList();
+  }
+
+  Future<int> createAdHocWorkout(List<MuscleGroup> groups, List<Exercise> exercises) async {
+    final name = groups.map((g) => g.displayName).join(' + ');
+    
+    final workout = Workout()
+      ..day = 'Custom'
+      ..name = name;
+
+    await _isar.writeTxn(() async {
+      await _isar.workouts.put(workout);
+      workout.exercises.addAll(exercises);
+      await workout.exercises.save();
+    });
+    
+    return workout.id;
   }
 
   Future<List<Workout>> getAllWorkouts() async {

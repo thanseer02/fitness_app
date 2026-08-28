@@ -25,7 +25,8 @@ const ExerciseSchema = CollectionSchema(
     r'muscleGroup': PropertySchema(
       id: 1,
       name: r'muscleGroup',
-      type: IsarType.string,
+      type: IsarType.byte,
+      enumMap: _ExercisemuscleGroupEnumValueMap,
     ),
     r'name': PropertySchema(
       id: 2,
@@ -64,7 +65,6 @@ int _exerciseEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.imagePath.length * 3;
-  bytesCount += 3 + object.muscleGroup.length * 3;
   bytesCount += 3 + object.name.length * 3;
   bytesCount += 3 + object.reps.length * 3;
   return bytesCount;
@@ -77,7 +77,7 @@ void _exerciseSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.imagePath);
-  writer.writeString(offsets[1], object.muscleGroup);
+  writer.writeByte(offsets[1], object.muscleGroup.index);
   writer.writeString(offsets[2], object.name);
   writer.writeString(offsets[3], object.reps);
   writer.writeLong(offsets[4], object.sets);
@@ -92,7 +92,9 @@ Exercise _exerciseDeserialize(
   final object = Exercise();
   object.id = id;
   object.imagePath = reader.readString(offsets[0]);
-  object.muscleGroup = reader.readString(offsets[1]);
+  object.muscleGroup =
+      _ExercisemuscleGroupValueEnumMap[reader.readByteOrNull(offsets[1])] ??
+          MuscleGroup.chest;
   object.name = reader.readString(offsets[2]);
   object.reps = reader.readString(offsets[3]);
   object.sets = reader.readLong(offsets[4]);
@@ -109,7 +111,8 @@ P _exerciseDeserializeProp<P>(
     case 0:
       return (reader.readString(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (_ExercisemuscleGroupValueEnumMap[reader.readByteOrNull(offset)] ??
+          MuscleGroup.chest) as P;
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
@@ -120,6 +123,29 @@ P _exerciseDeserializeProp<P>(
       throw IsarError('Unknown property with id $propertyId');
   }
 }
+
+const _ExercisemuscleGroupEnumValueMap = {
+  'chest': 0,
+  'back': 1,
+  'shoulders': 2,
+  'biceps': 3,
+  'triceps': 4,
+  'legs': 5,
+  'abs': 6,
+  'cardio': 7,
+  'fullBody': 8,
+};
+const _ExercisemuscleGroupValueEnumMap = {
+  0: MuscleGroup.chest,
+  1: MuscleGroup.back,
+  2: MuscleGroup.shoulders,
+  3: MuscleGroup.biceps,
+  4: MuscleGroup.triceps,
+  5: MuscleGroup.legs,
+  6: MuscleGroup.abs,
+  7: MuscleGroup.cardio,
+  8: MuscleGroup.fullBody,
+};
 
 Id _exerciseGetId(Exercise object) {
   return object.id;
@@ -394,55 +420,47 @@ extension ExerciseQueryFilter
   }
 
   QueryBuilder<Exercise, Exercise, QAfterFilterCondition> muscleGroupEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+      MuscleGroup value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'muscleGroup',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Exercise, Exercise, QAfterFilterCondition>
       muscleGroupGreaterThan(
-    String value, {
+    MuscleGroup value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'muscleGroup',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Exercise, Exercise, QAfterFilterCondition> muscleGroupLessThan(
-    String value, {
+    MuscleGroup value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'muscleGroup',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Exercise, Exercise, QAfterFilterCondition> muscleGroupBetween(
-    String lower,
-    String upper, {
+    MuscleGroup lower,
+    MuscleGroup upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -451,76 +469,6 @@ extension ExerciseQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> muscleGroupStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'muscleGroup',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> muscleGroupEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'muscleGroup',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> muscleGroupContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'muscleGroup',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> muscleGroupMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'muscleGroup',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> muscleGroupIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'muscleGroup',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Exercise, Exercise, QAfterFilterCondition>
-      muscleGroupIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'muscleGroup',
-        value: '',
       ));
     });
   }
@@ -991,10 +939,9 @@ extension ExerciseQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Exercise, Exercise, QDistinct> distinctByMuscleGroup(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Exercise, Exercise, QDistinct> distinctByMuscleGroup() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'muscleGroup', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'muscleGroup');
     });
   }
 
@@ -1033,7 +980,7 @@ extension ExerciseQueryProperty
     });
   }
 
-  QueryBuilder<Exercise, String, QQueryOperations> muscleGroupProperty() {
+  QueryBuilder<Exercise, MuscleGroup, QQueryOperations> muscleGroupProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'muscleGroup');
     });
