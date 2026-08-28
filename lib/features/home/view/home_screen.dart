@@ -4,9 +4,8 @@ import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:fitjourney/features/workout/view/workout_tab.dart';
 
 import 'package:fitjourney/features/nutrition/view/nutrition_tab.dart';
-import 'package:fitjourney/features/nutrition/viewmodel/nutrition_viewmodel.dart';
 import 'package:fitjourney/features/progress/view/progress_tab.dart';
-import 'package:fitjourney/features/profile/view/notification_settings_screen.dart';
+import 'package:fitjourney/features/profile/view/profile_tab.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     WorkoutTab(),
     NutritionTab(),
     ProgressTab(),
-    _ProfileTab(),
+    ProfileTab(),
   ];
 
   @override
@@ -44,111 +43,4 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _ProfileTab extends ConsumerWidget {
-  const _ProfileTab();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(profileViewModelProvider);
-    final nutritionViewModel = ref.watch(nutritionViewModelProvider);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const NotificationSettingsScreen()),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Builder(
-        builder: (context) {
-          if (viewModel.isLoading || nutritionViewModel.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (viewModel.error != null) {
-            return Center(child: Text('Error: ${viewModel.error}'));
-          }
-          final profile = viewModel.userProfile;
-          if (profile == null) {
-            return const Center(child: Text('No profile found.'));
-          }
-          final targets = nutritionViewModel.targets;
-
-          return ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              Text('Welcome, ${profile.name}!', style: Theme.of(context).textTheme.headlineMedium),
-              const SizedBox(height: 16),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Age: ${profile.age}'),
-                      Text('Height: ${profile.height} cm'),
-                      Text('Current Weight: ${profile.currentWeight} kg'),
-                      Text('Target Weight: ${profile.targetWeight} kg'),
-                      Text('Goal: ${profile.goal.name}'),
-                      Text('Activity Level: ${profile.activityLevel.name}'),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Daily Targets', style: Theme.of(context).textTheme.titleLarge),
-                      const SizedBox(height: 8),
-                      Text('Calories: ${targets.calories.toStringAsFixed(0)} kcal'),
-                      Text('Protein: ${targets.protein.toStringAsFixed(0)} g'),
-                      Text('Carbs: ${targets.carbs.toStringAsFixed(0)} g'),
-                      Text('Fat: ${targets.fat.toStringAsFixed(0)} g'),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('App Settings', style: Theme.of(context).textTheme.titleLarge),
-                      const SizedBox(height: 8),
-                      Consumer(
-                        builder: (context, ref, child) {
-                          final isDark = ref.watch(profileViewModelProvider).themeMode == ThemeMode.dark;
-                          return SwitchListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: const Text('Dark Mode'),
-                            value: isDark,
-                            onChanged: (val) {
-                              ref.read(profileViewModelProvider).toggleTheme(val);
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-}
 

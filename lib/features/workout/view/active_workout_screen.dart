@@ -4,6 +4,7 @@ import 'package:fitjourney/models/workout.dart';
 import 'package:fitjourney/models/workout_session.dart';
 import 'package:fitjourney/features/workout/viewmodel/workout_viewmodel.dart';
 import 'package:fitjourney/shared/widgets/rest_timer_dialog.dart';
+import 'widgets/active_exercise_card.dart';
 
 class ActiveWorkoutScreen extends ConsumerStatefulWidget {
   final Workout workout;
@@ -85,61 +86,11 @@ class _ActiveWorkoutScreenState extends ConsumerState<ActiveWorkoutScreen> {
         itemCount: exercises.length,
         itemBuilder: (context, exIndex) {
           final ex = exercises[exIndex];
-          return Card(
-            margin: const EdgeInsets.all(8),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
-                          ex.imagePath,
-                          width: 60,
-                          height: 60,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, size: 60),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(ex.name, style: Theme.of(context).textTheme.titleLarge),
-                            Text('${ex.muscleGroup} • Goal: ${ex.reps} reps'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Set', style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text('Status', style: TextStyle(fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  const Divider(),
-                  ...List.generate(ex.sets, (setIndex) {
-                    final isCompleted = _completedSets[exIndex]![setIndex];
-                    return ListTile(
-                      dense: true,
-                      contentPadding: EdgeInsets.zero,
-                      title: Text('Set ${setIndex + 1}'),
-                      trailing: Checkbox(
-                        value: isCompleted,
-                        onChanged: (_) => _toggleSet(exIndex, setIndex),
-                      ),
-                    );
-                  }),
-                ],
-              ),
-            ),
+          return ActiveExerciseCard(
+            exercise: ex,
+            exerciseIndex: exIndex,
+            completedSets: _completedSets[exIndex]!,
+            onToggleSet: _toggleSet,
           );
         },
       ),

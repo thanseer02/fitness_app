@@ -34,6 +34,50 @@ class NutritionViewModel extends ChangeNotifier {
   DailyNutrition? _dailyNutrition;
   DailyNutrition? get dailyNutrition => _dailyNutrition;
 
+  String _searchQuery = '';
+  String get searchQuery => _searchQuery;
+
+  bool _hostelFriendlyOnly = false;
+  bool get hostelFriendlyOnly => _hostelFriendlyOnly;
+
+  void setSearchQuery(String query) {
+    _searchQuery = query;
+    notifyListeners();
+  }
+
+  void toggleHostelFriendly(bool value) {
+    _hostelFriendlyOnly = value;
+    notifyListeners();
+  }
+
+  List<Food> get filteredFoods {
+    var filtered = _availableFoods.where((f) => f.name.toLowerCase().contains(_searchQuery)).toList();
+    if (_hostelFriendlyOnly) {
+      filtered = filtered.where((f) => f.isHostelFriendly).toList();
+    }
+    return filtered;
+  }
+
+  double get totalCalories {
+    if (_dailyNutrition == null) return 0;
+    return _dailyNutrition!.meals.expand((m) => m.entries).fold(0.0, (sum, e) => sum + (e.calories ?? 0));
+  }
+
+  double get totalProtein {
+    if (_dailyNutrition == null) return 0;
+    return _dailyNutrition!.meals.expand((m) => m.entries).fold(0.0, (sum, e) => sum + (e.protein ?? 0));
+  }
+
+  double get totalCarbs {
+    if (_dailyNutrition == null) return 0;
+    return _dailyNutrition!.meals.expand((m) => m.entries).fold(0.0, (sum, e) => sum + (e.carbs ?? 0));
+  }
+
+  double get totalFat {
+    if (_dailyNutrition == null) return 0;
+    return _dailyNutrition!.meals.expand((m) => m.entries).fold(0.0, (sum, e) => sum + (e.fat ?? 0));
+  }
+
   List<Food> _availableFoods = [];
   List<Food> get availableFoods => _availableFoods;
 
