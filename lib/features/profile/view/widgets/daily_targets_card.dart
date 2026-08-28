@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fitjourney/models/daily_nutrition.dart';
+import 'package:fitjourney/core/services/calorie_service.dart';
 
 class DailyTargetsCard extends StatelessWidget {
-  final DailyNutrition targets;
+  final MacroTargets targets;
 
   const DailyTargetsCard({super.key, required this.targets});
 

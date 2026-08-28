@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fitjourney/models/streak_data.dart';
+import 'package:fitjourney/features/progress/viewmodel/progress_viewmodel.dart';
 
 class CurrentStreakCard extends StatelessWidget {
   final StreakData streakData;

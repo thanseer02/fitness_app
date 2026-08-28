@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fitjourney/models/achievement.dart';
+import 'package:fitjourney/features/progress/viewmodel/progress_viewmodel.dart';
 
 class AchievementsList extends StatelessWidget {
-  final List<Achievement> achievements;
+  final List<AchievementItem> achievements;
 
   const AchievementsList({super.key, required this.achievements});
 

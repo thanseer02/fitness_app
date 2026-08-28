@@ -17,6 +17,7 @@ class WorkoutTab extends ConsumerWidget {
     );
   }
 
+  Widget _buildBody(BuildContext context, WorkoutViewModel viewModel) {
     if (viewModel.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }

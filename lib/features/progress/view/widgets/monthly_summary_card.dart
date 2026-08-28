@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fitjourney/models/monthly_summary.dart';
+import 'package:fitjourney/features/progress/viewmodel/progress_viewmodel.dart';
 
 class MonthlySummaryCard extends StatelessWidget {
   final MonthlySummary summary;

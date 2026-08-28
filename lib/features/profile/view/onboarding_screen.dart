@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fitjourney/models/user_profile.dart';
 import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:fitjourney/features/home/view/home_screen.dart';
+import 'widgets/onboarding_form_card.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -81,127 +82,23 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 ),
                 const SizedBox(height: 32),
                 
-                Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _buildTextField(
-                          label: 'Name',
-                          icon: Icons.person,
-                          validator: (v) => v == null || v.isEmpty ? 'Required' : null,
-                          onSaved: (v) => _name = v!,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildTextField(
-                          label: 'Age',
-                          icon: Icons.cake,
-                          isNumber: true,
-                          validator: (v) => v == null || int.tryParse(v) == null ? 'Invalid' : null,
-                          onSaved: (v) => _age = int.parse(v!),
-                        ),
-                        const SizedBox(height: 16),
-                        _buildTextField(
-                          label: 'Height (cm)',
-                          icon: Icons.height,
-                          isNumber: true,
-                          validator: (v) => v == null || double.tryParse(v) == null ? 'Invalid' : null,
-                          onSaved: (v) => _height = double.parse(v!),
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildTextField(
-                                label: 'Current Weight (kg)',
-                                icon: Icons.scale,
-                                isNumber: true,
-                                validator: (v) => v == null || double.tryParse(v) == null ? 'Invalid' : null,
-                                onSaved: (v) => _currentWeight = double.parse(v!),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: _buildTextField(
-                                label: 'Target Weight (kg)',
-                                icon: Icons.track_changes,
-                                isNumber: true,
-                                validator: (v) => v == null || double.tryParse(v) == null ? 'Invalid' : null,
-                                onSaved: (v) => _targetWeight = double.parse(v!),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-                        DropdownButtonFormField<Goal>(
-                          decoration: InputDecoration(
-                            labelText: 'Primary Goal',
-                            prefixIcon: const Icon(Icons.flag),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                          ),
-                          initialValue: _goal,
-                          items: Goal.values.map((g) {
-                            return DropdownMenuItem(value: g, child: Text(g.name.toUpperCase()));
-                          }).toList(),
-                          onChanged: (v) => setState(() => _goal = v!),
-                        ),
-                        const SizedBox(height: 16),
-                        DropdownButtonFormField<ActivityLevel>(
-                          decoration: InputDecoration(
-                            labelText: 'Activity Level',
-                            prefixIcon: const Icon(Icons.directions_run),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                          ),
-                          initialValue: _activityLevel,
-                          items: ActivityLevel.values.map((a) {
-                            return DropdownMenuItem(value: a, child: Text(a.name.toUpperCase()));
-                          }).toList(),
-                          onChanged: (v) => setState(() => _activityLevel = v!),
-                        ),
-                        const SizedBox(height: 32),
-                        ElevatedButton(
-                          onPressed: _submit,
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                          child: const Text('Start Journey', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
-                  ),
+                OnboardingFormCard(
+                  initialGoal: _goal,
+                  initialActivityLevel: _activityLevel,
+                  onGoalChanged: (v) => setState(() => _goal = v),
+                  onActivityLevelChanged: (v) => setState(() => _activityLevel = v),
+                  onNameSaved: (v) => _name = v!,
+                  onAgeSaved: (v) => _age = int.parse(v!),
+                  onHeightSaved: (v) => _height = double.parse(v!),
+                  onCurrentWeightSaved: (v) => _currentWeight = double.parse(v!),
+                  onTargetWeightSaved: (v) => _targetWeight = double.parse(v!),
+                  onSubmit: _submit,
                 ),
               ],
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildTextField({
-    required String label,
-    required IconData icon,
-    bool isNumber = false,
-    required FormFieldValidator<String> validator,
-    required FormFieldSetter<String> onSaved,
-  }) {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.surface,
-      ),
-      keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-      validator: validator,
-      onSaved: onSaved,
     );
   }
 }
