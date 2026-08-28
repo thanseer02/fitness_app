@@ -4,6 +4,8 @@ import '../providers/user_profile_provider.dart';
 import 'workout_tab.dart';
 
 import 'nutrition_tab.dart';
+import '../providers/nutrition_provider.dart';
+import 'progress_tab.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final _tabs = const [
     WorkoutTab(),
     NutritionTab(),
+    ProgressTab(),
     _ProfileTab(),
   ];
 
@@ -27,10 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
         onTap: (i) => setState(() => _currentIndex = i),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Workout'),
           BottomNavigationBarItem(icon: Icon(Icons.restaurant), label: 'Nutrition'),
+          BottomNavigationBarItem(icon: Icon(Icons.trending_up), label: 'Progress'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
@@ -44,6 +49,7 @@ class _ProfileTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profileState = ref.watch(userProfileNotifierProvider);
+    final targets = ref.watch(macroTargetsProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
@@ -69,6 +75,23 @@ class _ProfileTab extends ConsumerWidget {
                       Text('Target Weight: ${profile.targetWeight} kg'),
                       Text('Goal: ${profile.goal.name}'),
                       Text('Activity Level: ${profile.activityLevel.name}'),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Daily Targets', style: Theme.of(context).textTheme.titleLarge),
+                      const SizedBox(height: 8),
+                      Text('Calories: ${targets.calories.toStringAsFixed(0)} kcal'),
+                      Text('Protein: ${targets.protein.toStringAsFixed(0)} g'),
+                      Text('Carbs: ${targets.carbs.toStringAsFixed(0)} g'),
+                      Text('Fat: ${targets.fat.toStringAsFixed(0)} g'),
                     ],
                   ),
                 ),
