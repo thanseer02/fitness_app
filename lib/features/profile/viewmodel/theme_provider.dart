@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/app_settings.dart';
-import 'isar_provider.dart';
+import 'package:fitjourney/models/app_settings.dart';
+import 'package:fitjourney/core/di/isar_provider.dart';
 
 class ThemeNotifier extends AsyncNotifier<ThemeMode> {
   @override

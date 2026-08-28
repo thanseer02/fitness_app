@@ -1,5 +1,5 @@
 import 'package:isar/isar.dart';
-import 'exercise.dart';
+import 'package:fitjourney/models/exercise.dart';
 
 part 'workout.g.dart';
 

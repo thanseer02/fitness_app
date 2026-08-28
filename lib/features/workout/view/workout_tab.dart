@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/workout_provider.dart';
-import 'active_workout_screen.dart';
+import 'package:fitjourney/features/workout/viewmodel/workout_provider.dart';
+import 'package:fitjourney/features/workout/view/active_workout_screen.dart';
 
 class WorkoutTab extends ConsumerWidget {
   const WorkoutTab({super.key});

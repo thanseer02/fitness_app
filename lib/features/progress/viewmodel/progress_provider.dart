@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
-import '../models/weight_entry.dart';
-import '../models/workout.dart';
-import '../models/workout_session.dart';
-import '../models/daily_nutrition.dart';
-import 'isar_provider.dart';
+import 'package:fitjourney/models/weight_entry.dart';
+import 'package:fitjourney/models/workout.dart';
+import 'package:fitjourney/models/workout_session.dart';
+import 'package:fitjourney/models/daily_nutrition.dart';
+import 'package:fitjourney/core/di/isar_provider.dart';
 
 final weightHistoryProvider = FutureProvider<List<WeightEntry>>((ref) async {
   final isar = await ref.watch(isarProvider.future);

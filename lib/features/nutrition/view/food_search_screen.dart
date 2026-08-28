@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/food.dart';
-import '../providers/nutrition_provider.dart';
+import 'package:fitjourney/models/food.dart';
+import 'package:fitjourney/features/nutrition/viewmodel/nutrition_provider.dart';
 
 class FoodSearchScreen extends ConsumerStatefulWidget {
   final String mealType;
@@ -134,10 +134,9 @@ class _AddFoodDialogState extends ConsumerState<_AddFoodDialog> {
           onPressed: () async {
             if (_quantity > 0) {
               await ref.read(dailyNutritionProvider.notifier).addFood(widget.mealType, widget.food, _quantity);
-              if (mounted) {
-                Navigator.of(context).pop(); // pop dialog
-                Navigator.of(context).pop(); // pop search screen
-              }
+              if (!context.mounted) return;
+              Navigator.of(context).pop(); // pop dialog
+              Navigator.of(context).pop(); // pop search screen
             }
           },
           child: const Text('ADD'),

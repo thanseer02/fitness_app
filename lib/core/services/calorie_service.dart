@@ -1,4 +1,4 @@
-import '../models/user_profile.dart';
+import 'package:fitjourney/models/user_profile.dart';
 
 class MacroTargets {
   final double calories;

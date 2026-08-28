@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/notification_settings.dart';
-import '../services/notification_service.dart';
-import 'isar_provider.dart';
+import 'package:fitjourney/models/notification_settings.dart';
+import 'package:fitjourney/core/services/notification_service.dart';
+import 'package:fitjourney/core/di/isar_provider.dart';
 
 class NotificationSettingsNotifier extends AsyncNotifier<NotificationSettings> {
   @override

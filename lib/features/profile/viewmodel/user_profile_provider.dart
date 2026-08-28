@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
-import '../models/user_profile.dart';
-import 'isar_provider.dart';
+import 'package:fitjourney/models/user_profile.dart';
+import 'package:fitjourney/core/di/isar_provider.dart';
 
 class UserProfileNotifier extends AsyncNotifier<UserProfile?> {
   @override

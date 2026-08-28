@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/weight_entry.dart';
-import '../providers/isar_provider.dart';
-import '../providers/user_profile_provider.dart';
-import '../providers/progress_provider.dart';
+import 'package:fitjourney/models/weight_entry.dart';
+import 'package:fitjourney/core/di/isar_provider.dart';
+import 'package:fitjourney/features/profile/viewmodel/user_profile_provider.dart';
+import 'package:fitjourney/features/progress/viewmodel/progress_provider.dart';
 
 class WeeklyCheckInScreen extends ConsumerStatefulWidget {
   const WeeklyCheckInScreen({super.key});

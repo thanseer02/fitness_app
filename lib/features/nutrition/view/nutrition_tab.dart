@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/nutrition_provider.dart';
-import 'food_search_screen.dart';
+import 'package:fitjourney/features/nutrition/viewmodel/nutrition_provider.dart';
+import 'package:fitjourney/features/nutrition/view/food_search_screen.dart';
 
 class NutritionTab extends ConsumerWidget {
   const NutritionTab({super.key});

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../providers/progress_provider.dart';
-import '../providers/gamification_provider.dart';
-import 'weekly_check_in_screen.dart';
+import 'package:fitjourney/features/progress/viewmodel/progress_provider.dart';
+import 'package:fitjourney/features/progress/viewmodel/gamification_provider.dart';
+import 'package:fitjourney/features/progress/view/weekly_check_in_screen.dart';
 
 class ProgressTab extends ConsumerWidget {
   const ProgressTab({super.key});
@@ -257,7 +257,7 @@ class ProgressTab extends ConsumerWidget {
                   children: [
                     _StatCard(title: 'Workouts\nCompleted', value: '${stats.totalWorkouts}', color: Colors.purple),
                     _StatCard(title: '30-Day\nConsistency', value: '${stats.workoutConsistencyPercentage.toStringAsFixed(1)}%', color: Colors.green),
-                    _StatCard(title: 'Avg Daily\nCalories', value: '${stats.avgDailyCalories.toStringAsFixed(0)}', color: Colors.orange),
+                    _StatCard(title: 'Avg Daily\nCalories', value: stats.avgDailyCalories.toStringAsFixed(0), color: Colors.orange),
                     _StatCard(title: 'Avg Daily\nProtein', value: '${stats.avgDailyProtein.toStringAsFixed(0)}g', color: Colors.red),
                   ],
                 );

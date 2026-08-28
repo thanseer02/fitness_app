@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'screens/onboarding_screen.dart';
-import 'screens/home_screen.dart';
-import 'providers/user_profile_provider.dart';
+import 'package:fitjourney/features/profile/view/onboarding_screen.dart';
+import 'package:fitjourney/features/home/view/home_screen.dart';
+import 'package:fitjourney/features/profile/viewmodel/user_profile_provider.dart';
 
-import 'services/notification_service.dart';
-import 'providers/theme_provider.dart';
+import 'package:fitjourney/core/services/notification_service.dart';
+import 'package:fitjourney/features/profile/viewmodel/theme_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

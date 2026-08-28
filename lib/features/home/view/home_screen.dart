@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/user_profile_provider.dart';
-import 'workout_tab.dart';
+import 'package:fitjourney/features/profile/viewmodel/user_profile_provider.dart';
+import 'package:fitjourney/features/workout/view/workout_tab.dart';
 
-import 'nutrition_tab.dart';
-import '../providers/nutrition_provider.dart';
-import 'progress_tab.dart';
-import 'notification_settings_screen.dart';
-import '../providers/theme_provider.dart';
+import 'package:fitjourney/features/nutrition/view/nutrition_tab.dart';
+import 'package:fitjourney/features/nutrition/viewmodel/nutrition_provider.dart';
+import 'package:fitjourney/features/progress/view/progress_tab.dart';
+import 'package:fitjourney/features/profile/view/notification_settings_screen.dart';
+import 'package:fitjourney/features/profile/viewmodel/theme_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

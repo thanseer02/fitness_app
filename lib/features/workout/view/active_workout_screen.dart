@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/workout.dart';
-import '../models/workout_session.dart';
-import '../providers/isar_provider.dart';
-import '../widgets/rest_timer_dialog.dart';
+import 'package:fitjourney/models/workout.dart';
+import 'package:fitjourney/models/workout_session.dart';
+import 'package:fitjourney/core/di/isar_provider.dart';
+import 'package:fitjourney/shared/widgets/rest_timer_dialog.dart';
 
 class ActiveWorkoutScreen extends ConsumerStatefulWidget {
   final Workout workout;
@@ -103,7 +103,7 @@ class _ActiveWorkoutScreenState extends ConsumerState<ActiveWorkoutScreen> {
                           width: 60,
                           height: 60,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const Icon(Icons.image, size: 60),
+                          errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, size: 60),
                         ),
                       ),
                       const SizedBox(width: 16),

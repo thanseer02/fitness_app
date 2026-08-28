@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
-import '../models/food.dart';
-import '../models/daily_nutrition.dart';
-import 'isar_provider.dart';
-import 'user_profile_provider.dart';
-import '../services/calorie_service.dart';
-import '../services/notification_service.dart';
+import 'package:fitjourney/models/food.dart';
+import 'package:fitjourney/models/daily_nutrition.dart';
+import 'package:fitjourney/core/di/isar_provider.dart';
+import 'package:fitjourney/features/profile/viewmodel/user_profile_provider.dart';
+import 'package:fitjourney/core/services/calorie_service.dart';
+import 'package:fitjourney/core/services/notification_service.dart';
 
 class NutritionSeedService {
   static Future<void> seedFoods(Isar isar) async {
