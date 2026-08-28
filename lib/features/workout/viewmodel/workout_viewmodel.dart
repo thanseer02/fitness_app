@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fitjourney/models/workout.dart';
 import 'package:fitjourney/models/workout_session.dart';
 import 'package:fitjourney/features/workout/repository/workout_repository.dart';
+import 'package:fitjourney/models/missed_workout.dart';
 
 class WorkoutViewModel extends ChangeNotifier {
   final WorkoutRepository _repository;
@@ -24,6 +25,9 @@ class WorkoutViewModel extends ChangeNotifier {
 
   String? _error;
   String? get error => _error;
+
+  MissedWorkout? _pendingMissedWorkoutConfirmation;
+  MissedWorkout? get pendingMissedWorkoutConfirmation => _pendingMissedWorkoutConfirmation;
 
   Future<void> _init() async {
     _isLoading = true;
@@ -74,11 +78,12 @@ class WorkoutViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> finishActiveWorkout(Workout workout, DateTime startTime, List<String> sessionLogs) async {
+  Future<void> finishActiveWorkout(Workout workout, DateTime startTime, List<String> sessionLogs, {DateTime? overrideDate}) async {
     final duration = DateTime.now().difference(startTime).inSeconds;
+    final logDate = overrideDate ?? DateTime.now();
 
     final session = WorkoutSession()
-      ..date = DateTime.now()
+      ..date = logDate
       ..workoutId = workout.id
       ..completedSetsReps = sessionLogs
       ..durationInSeconds = duration;
@@ -86,16 +91,53 @@ class WorkoutViewModel extends ChangeNotifier {
     await completeWorkout(session);
   }
 
-  Future<void> changeWorkout(int? newWorkoutId) async {
+  Future<void> selectWorkout(int? newWorkoutId) async {
     _isLoading = true;
     notifyListeners();
     try {
-      await _repository.setWorkoutOverride(DateTime.now(), newWorkoutId);
-      await _init(); // Re-fetch data
+      if (newWorkoutId == null) {
+        // Just override to Rest Day
+        await _repository.setWorkoutOverride(DateTime.now(), null);
+        await _init();
+        return;
+      }
+
+      final missedWorkouts = await _repository.getMissedWorkouts();
+      final match = missedWorkouts.where((m) => m.workoutId == newWorkoutId).firstOrNull;
+
+      if (match != null) {
+        _pendingMissedWorkoutConfirmation = match;
+        _isLoading = false;
+        notifyListeners();
+      } else {
+        await _repository.setWorkoutOverride(DateTime.now(), newWorkoutId);
+        await _init();
+      }
     } catch (e) {
       _error = e.toString();
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> confirmMissedWorkoutSelection(bool retroactivelyLog) async {
+    if (_pendingMissedWorkoutConfirmation == null) return;
+    
+    final missed = _pendingMissedWorkoutConfirmation!;
+    _pendingMissedWorkoutConfirmation = null;
+    notifyListeners();
+
+    if (!retroactivelyLog) {
+      _isLoading = true;
+      notifyListeners();
+      try {
+        await _repository.setWorkoutOverride(DateTime.now(), missed.workoutId);
+        await _init();
+      } catch (e) {
+        _error = e.toString();
+        _isLoading = false;
+        notifyListeners();
+      }
     }
   }
 }

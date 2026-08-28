@@ -4,6 +4,7 @@ import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:fitjourney/features/progress/viewmodel/progress_viewmodel.dart';
 import 'package:fitjourney/features/nutrition/viewmodel/nutrition_viewmodel.dart';
 import 'package:fitjourney/features/workout/viewmodel/workout_viewmodel.dart';
+import 'package:fitjourney/features/home/viewmodel/home_viewmodel.dart';
 import 'package:fitjourney/features/workout/view/active_workout_screen.dart';
 import 'package:fitjourney/features/workout/view/workout_tab.dart';
 import 'package:fitjourney/core/theme/app_colors.dart';
@@ -22,6 +23,7 @@ class HomeTab extends StatelessWidget {
     final progressVM = context.watch<ProgressViewModel>();
     final nutritionVM = context.watch<NutritionViewModel>();
     final workoutVM = context.watch<WorkoutViewModel>();
+    final homeVM = context.watch<HomeViewModel>();
 
     final user = profileVM.userProfile;
     if (user == null) return const Center(child: CircularProgressIndicator());
@@ -34,6 +36,8 @@ class HomeTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHeader(context, user.name, user.goal.toString().split('.').last),
+              if (!homeVM.isMissedWorkoutsDismissed && homeVM.missedWorkouts.isNotEmpty)
+                _buildMissedWorkoutBanner(context, homeVM),
               SizedBox(height: AppSpacing.lg),
               _buildHeroCard(context, progressVM),
               SizedBox(height: AppSpacing.lg),
@@ -65,6 +69,51 @@ class HomeTab extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildMissedWorkoutBanner(BuildContext context, HomeViewModel homeVM) {
+    final theme = Theme.of(context);
+    final missed = homeVM.missedWorkouts;
+    
+    String message;
+    if (missed.length == 1) {
+      final days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      final dayName = days[missed.first.date.weekday - 1];
+      message = 'You missed ${missed.first.workoutName} on $dayName';
+    } else {
+      message = '${missed.length} missed workouts';
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(top: AppSpacing.md),
+      child: AppCard(
+        color: theme.colorScheme.errorContainer,
+        onTap: () {
+          // The prompt says "navigating to that workout so the user can log it retroactively or start it now."
+          // But our flow now redirects them to the WorkoutTab to use the Smart Picker.
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const WorkoutTab()));
+        },
+        child: Row(
+          children: [
+            Icon(Icons.warning_rounded, color: theme.colorScheme.onErrorContainer),
+            SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Text(
+                message,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onErrorContainer,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.close, color: theme.colorScheme.onErrorContainer),
+              onPressed: () => homeVM.dismissMissedWorkouts(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

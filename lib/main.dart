@@ -17,11 +17,14 @@ import 'package:fitjourney/models/weight_entry.dart';
 import 'package:fitjourney/models/notification_settings.dart';
 import 'package:fitjourney/models/app_settings.dart';
 import 'package:fitjourney/models/achievement.dart';
+import 'package:fitjourney/models/workout_override.dart';
 
 import 'package:fitjourney/features/profile/repository/profile_repository.dart';
 import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:fitjourney/features/workout/repository/workout_repository.dart';
 import 'package:fitjourney/features/workout/viewmodel/workout_viewmodel.dart';
+import 'package:fitjourney/features/workout/viewmodel/workout_history_viewmodel.dart';
+import 'package:fitjourney/features/home/viewmodel/home_viewmodel.dart';
 import 'package:fitjourney/features/nutrition/repository/nutrition_repository.dart';
 import 'package:fitjourney/features/nutrition/viewmodel/nutrition_viewmodel.dart';
 import 'package:fitjourney/features/progress/repository/progress_repository.dart';
@@ -67,6 +70,12 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider<WorkoutViewModel>(
           create: (ctx) => WorkoutViewModel(ctx.read<WorkoutRepository>()),
+        ),
+        ChangeNotifierProvider<WorkoutHistoryViewModel>(
+          create: (ctx) => WorkoutHistoryViewModel(ctx.read<WorkoutRepository>()),
+        ),
+        ChangeNotifierProvider<HomeViewModel>(
+          create: (ctx) => HomeViewModel(ctx.read<WorkoutRepository>()),
         ),
         ChangeNotifierProvider<NutritionViewModel>(
           create: (ctx) => NutritionViewModel(

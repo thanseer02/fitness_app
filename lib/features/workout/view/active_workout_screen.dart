@@ -19,8 +19,9 @@ class SetData {
 
 class ActiveWorkoutScreen extends StatefulWidget {
   final Workout workout;
+  final DateTime? overrideDate;
 
-  const ActiveWorkoutScreen({super.key, required this.workout});
+  const ActiveWorkoutScreen({super.key, required this.workout, this.overrideDate});
 
   @override
   State<ActiveWorkoutScreen> createState() => _ActiveWorkoutScreenState();
@@ -91,7 +92,7 @@ class _ActiveWorkoutScreenState extends State<ActiveWorkoutScreen> {
     }
 
     final viewModel = context.read<WorkoutViewModel>();
-    await viewModel.finishActiveWorkout(widget.workout, _startTime, sessionLogs);
+    await viewModel.finishActiveWorkout(widget.workout, _startTime, sessionLogs, overrideDate: widget.overrideDate);
 
     if (mounted) {
       Navigator.of(context).pop(); // pop active workout screen
