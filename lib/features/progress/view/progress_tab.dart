@@ -41,13 +41,13 @@ class ProgressTab extends StatelessWidget {
           }
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: EdgeInsets.all(AppSpacing.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 if (viewModel.streakData != null)
                   CurrentStreakCard(streakData: viewModel.streakData!),
-                const SizedBox(height: AppSpacing.lg),
+                SizedBox(height: AppSpacing.lg),
 
                 // Weight Tracker Chart
                 SectionHeader(
@@ -55,19 +55,19 @@ class ProgressTab extends StatelessWidget {
                   actionLabel: 'Log',
                   onActionPressed: () => _openLogWeightSheet(context),
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 AppCard(
-                  padding: const EdgeInsets.all(AppSpacing.md),
+                  padding: EdgeInsets.all(AppSpacing.md),
                   child: SizedBox(
                     height: 250,
                     child: WeightTrackerChart(entries: viewModel.weightHistory),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
 
                 // Stat Grid
                 const SectionHeader(title: 'All-Time Stats'),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 if (viewModel.stats != null)
                   GridView.count(
                     crossAxisCount: 2,
@@ -107,13 +107,13 @@ class ProgressTab extends StatelessWidget {
                       ),
                     ],
                   ),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
 
                 // Achievements
                 const SectionHeader(title: 'Achievements'),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 AchievementsList(achievements: viewModel.achievements),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
               ],
             ),
           );
@@ -131,7 +131,7 @@ class ProgressTab extends StatelessWidget {
   Widget _buildStatGridCard(BuildContext context, String title, String value, IconData icon, Color color) {
     final theme = Theme.of(context);
     return AppCard(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.md),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,7 +152,7 @@ class ProgressTab extends StatelessWidget {
           ),
           const Spacer(),
           Text(value, style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold, color: color)),
-          const SizedBox(height: AppSpacing.xs),
+          SizedBox(height: AppSpacing.xs),
           Text(title, style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
         ],
       ),

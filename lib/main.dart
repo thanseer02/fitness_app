@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:fitjourney/features/profile/view/onboarding_screen.dart';
 import 'package:fitjourney/features/home/view/home_screen.dart';
 import 'package:fitjourney/core/services/notification_service.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:fitjourney/models/user_profile.dart';
 import 'package:fitjourney/models/exercise.dart';
@@ -76,7 +77,12 @@ Future<void> main() async {
           create: (ctx) => ProgressViewModel(ctx.read<ProgressRepository>()),
         ),
       ],
-      child: const MyApp(),
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) => const MyApp(),
+      ),
     ),
   );
 }

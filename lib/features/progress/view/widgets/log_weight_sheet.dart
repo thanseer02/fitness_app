@@ -56,7 +56,7 @@ class _LogWeightSheetState extends State<LogWeightSheet> {
       ),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -64,14 +64,14 @@ class _LogWeightSheetState extends State<LogWeightSheet> {
           Container(
             width: 40,
             height: 4,
-            margin: const EdgeInsets.only(bottom: AppSpacing.lg),
+            margin: EdgeInsets.only(bottom: AppSpacing.lg),
             decoration: BoxDecoration(
               color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
               borderRadius: AppRadius.roundRadius,
             ),
           ),
           Text('Log Weight', style: theme.textTheme.headlineSmall),
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -92,11 +92,11 @@ class _LogWeightSheetState extends State<LogWeightSheet> {
                   autofocus: true,
                 ),
               ),
-              const SizedBox(width: AppSpacing.xs),
+              SizedBox(width: AppSpacing.xs),
               Text('kg', style: theme.textTheme.titleLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
             ],
           ),
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl),
           SizedBox(
             width: double.infinity,
             child: AppButton(

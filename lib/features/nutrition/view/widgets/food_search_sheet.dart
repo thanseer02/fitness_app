@@ -33,9 +33,9 @@ class FoodSearchSheet extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.8,
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
       ),
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: EdgeInsets.all(AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,7 +44,7 @@ class FoodSearchSheet extends StatelessWidget {
             child: Container(
               width: 40,
               height: 4,
-              margin: const EdgeInsets.only(bottom: AppSpacing.lg),
+              margin: EdgeInsets.only(bottom: AppSpacing.lg),
               decoration: BoxDecoration(
                 color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                 borderRadius: AppRadius.roundRadius,
@@ -52,7 +52,7 @@ class FoodSearchSheet extends StatelessWidget {
             ),
           ),
           Text('Add to $mealType', style: theme.textTheme.headlineSmall),
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
           
           // Search Bar
           Container(
@@ -65,12 +65,12 @@ class FoodSearchSheet extends StatelessWidget {
                 hintText: 'Search Food',
                 prefixIcon: Icon(Icons.search, color: theme.colorScheme.primary),
                 border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 14),
+                contentPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 14),
               ),
               onChanged: (val) => context.read<NutritionViewModel>().setSearchQuery(val.toLowerCase()),
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           
           // Filter Chip
           FilterChip(
@@ -80,7 +80,7 @@ class FoodSearchSheet extends StatelessWidget {
             checkmarkColor: AppColors.secondary,
             onSelected: (val) => context.read<NutritionViewModel>().toggleHostelFriendly(val),
           ),
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
           
           // Results
           Expanded(child: _buildFoodList(context, viewModel)),
@@ -101,10 +101,10 @@ class FoodSearchSheet extends StatelessWidget {
       itemBuilder: (context, index) {
         final food = filtered[index];
         return Padding(
-          padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+          padding: EdgeInsets.only(bottom: AppSpacing.sm),
           child: AppCard(
             onTap: () => _openQuantitySheet(context, food),
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: EdgeInsets.all(AppSpacing.md),
             child: Row(
               children: [
                 Expanded(
@@ -115,12 +115,12 @@ class FoodSearchSheet extends StatelessWidget {
                         children: [
                           Text(food.name, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                           if (food.isHostelFriendly) ...[
-                            const SizedBox(width: AppSpacing.xs),
+                            SizedBox(width: AppSpacing.xs),
                             const Icon(Icons.check_circle, color: AppColors.secondary, size: 16),
                           ],
                         ],
                       ),
-                      const SizedBox(height: AppSpacing.xs),
+                      SizedBox(height: AppSpacing.xs),
                       Text(
                         '${food.calories} kcal | ${food.protein}g P | ${food.carbs}g C | ${food.fat}g F (per 100g)',
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),

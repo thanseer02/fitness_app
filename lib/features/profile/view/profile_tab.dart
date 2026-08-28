@@ -37,7 +37,7 @@ class ProfileTab extends StatelessWidget {
           }
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: EdgeInsets.all(AppSpacing.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -49,11 +49,11 @@ class ProfileTab extends StatelessWidget {
                       backgroundColor: theme.colorScheme.surfaceContainerHighest,
                       child: Icon(Icons.person, size: 60, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     Text(profile.name, style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
-                    const SizedBox(height: AppSpacing.xs),
+                    SizedBox(height: AppSpacing.xs),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 6),
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 6),
                       decoration: BoxDecoration(
                         color: AppColors.secondary.withValues(alpha: 0.2),
                         borderRadius: AppRadius.roundRadius,
@@ -65,7 +65,7 @@ class ProfileTab extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
 
                 // Stat Row
                 Row(
@@ -77,16 +77,16 @@ class ProfileTab extends StatelessWidget {
                     StatChip(label: '🎯 ${profile.targetWeight.toStringAsFixed(1)}kg'),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
 
                 // Achievements Section
                 const SectionHeader(title: 'Achievements'),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 if (progressViewModel.achievements.isNotEmpty)
                   AchievementsList(achievements: progressViewModel.achievements)
                 else
                   AppCard(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    padding: EdgeInsets.all(AppSpacing.lg),
                     child: Center(
                       child: Text(
                         'No achievements unlocked yet.',
@@ -94,11 +94,11 @@ class ProfileTab extends StatelessWidget {
                       ),
                     ),
                   ),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
 
                 // Settings List
                 const SectionHeader(title: 'Settings'),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 AppCard(
                   padding: EdgeInsets.zero,
                   child: Column(
@@ -142,7 +142,7 @@ class ProfileTab extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
               ],
             ),
           );

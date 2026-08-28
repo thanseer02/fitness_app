@@ -20,9 +20,9 @@ class AchievementsList extends StatelessWidget {
           final ach = achievements[index];
           return Container(
             width: 120,
-            margin: const EdgeInsets.only(right: AppSpacing.md),
+            margin: EdgeInsets.only(right: AppSpacing.md),
             child: AppCard(
-              padding: const EdgeInsets.all(AppSpacing.md),
+              padding: EdgeInsets.all(AppSpacing.md),
               color: ach.isUnlocked ? AppColors.secondary.withValues(alpha: 0.15) : Theme.of(context).colorScheme.surfaceContainerHighest,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -32,7 +32,7 @@ class AchievementsList extends StatelessWidget {
                     color: ach.isUnlocked ? AppColors.secondary : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
                     size: 36,
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   Text(
                     ach.title,
                     textAlign: TextAlign.center,

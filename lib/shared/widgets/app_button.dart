@@ -28,7 +28,7 @@ class AppButton extends StatelessWidget {
         return FilledButton(
           onPressed: isLoading ? null : onPressed,
           style: FilledButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: AppSpacing.lg),
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: AppSpacing.lg),
             shape: RoundedRectangleBorder(borderRadius: AppRadius.smRadius),
           ),
           child: _buildContent(theme),
@@ -37,7 +37,7 @@ class AppButton extends StatelessWidget {
         return OutlinedButton(
           onPressed: isLoading ? null : onPressed,
           style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: AppSpacing.lg),
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: AppSpacing.lg),
             shape: RoundedRectangleBorder(borderRadius: AppRadius.smRadius),
           ),
           child: _buildContent(theme),
@@ -46,7 +46,7 @@ class AppButton extends StatelessWidget {
         return TextButton(
           onPressed: isLoading ? null : onPressed,
           style: TextButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: AppSpacing.lg),
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: AppSpacing.lg),
             shape: RoundedRectangleBorder(borderRadius: AppRadius.smRadius),
           ),
           child: _buildContent(theme),
@@ -69,7 +69,7 @@ class AppButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, size: 20),
-          const SizedBox(width: AppSpacing.sm),
+          SizedBox(width: AppSpacing.sm),
           Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
         ],
       );

@@ -22,7 +22,7 @@ class StatChip extends StatelessWidget {
     final txtColor = textColor ?? theme.colorScheme.onPrimaryContainer;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: AppRadius.roundRadius,

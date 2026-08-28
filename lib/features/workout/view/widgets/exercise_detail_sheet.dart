@@ -75,9 +75,9 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
       ),
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: EdgeInsets.all(AppSpacing.lg),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -85,7 +85,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
           Container(
             width: 40,
             height: 4,
-            margin: const EdgeInsets.only(bottom: AppSpacing.lg),
+            margin: EdgeInsets.only(bottom: AppSpacing.lg),
             decoration: BoxDecoration(
               color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
               borderRadius: AppRadius.roundRadius,
@@ -110,7 +110,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
                   ),
                 ),
               ),
-              const SizedBox(width: AppSpacing.md),
+              SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +119,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
                       widget.exercise.name,
                       style: theme.textTheme.headlineSmall,
                     ),
-                    const SizedBox(height: AppSpacing.xs),
+                    SizedBox(height: AppSpacing.xs),
                     Text(
                       '${widget.exercise.sets} sets × ${widget.exercise.reps} reps',
                       style: theme.textTheme.bodyMedium?.copyWith(
@@ -132,7 +132,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl),
           
           // Rest Timer Section
           if (_restSecondsRemaining > 0) ...[
@@ -148,7 +148,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
                 ),
               ),
             ),
-            const SizedBox(height: AppSpacing.xl),
+            SizedBox(height: AppSpacing.xl),
           ],
           
           // Sets List
@@ -160,7 +160,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
               itemBuilder: (context, index) {
                 final set = widget.sets[index];
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
                   child: Row(
                     children: [
                       Container(
@@ -168,7 +168,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
                         alignment: Alignment.center,
                         child: Text('${index + 1}', style: theme.textTheme.titleMedium),
                       ),
-                      const SizedBox(width: AppSpacing.md),
+                      SizedBox(width: AppSpacing.md),
                       
                       // Weight Input
                       Expanded(
@@ -181,7 +181,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
                           },
                         ),
                       ),
-                      const SizedBox(width: AppSpacing.md),
+                      SizedBox(width: AppSpacing.md),
                       
                       // Reps Input
                       Expanded(
@@ -194,7 +194,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
                           },
                         ),
                       ),
-                      const SizedBox(width: AppSpacing.md),
+                      SizedBox(width: AppSpacing.md),
                       
                       // Done Checkbox
                       IconButton(
@@ -211,7 +211,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
               },
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg),
           
           SizedBox(
             width: double.infinity,
@@ -229,7 +229,7 @@ class _ExerciseDetailSheetState extends State<ExerciseDetailSheet> {
 
   Widget _buildInputCard(ThemeData theme, String label, String initialValue, Function(String) onChanged) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: AppRadius.smRadius,

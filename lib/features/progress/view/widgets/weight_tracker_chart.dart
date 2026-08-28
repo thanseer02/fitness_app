@@ -4,6 +4,7 @@ import 'package:fitjourney/models/weight_entry.dart';
 import 'package:fitjourney/core/theme/app_colors.dart';
 import 'package:fitjourney/core/theme/app_constants.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WeightTrackerChart extends StatelessWidget {
   final List<WeightEntry> entries;
@@ -38,7 +39,7 @@ class WeightTrackerChart extends StatelessWidget {
     final maxY = spots.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 2;
 
     return Padding(
-      padding: const EdgeInsets.only(right: AppSpacing.md, top: AppSpacing.sm, bottom: AppSpacing.sm),
+      padding: EdgeInsets.only(right: AppSpacing.md, top: AppSpacing.sm, bottom: AppSpacing.sm),
       child: LineChart(
         LineChartData(
           minX: minX,
@@ -77,7 +78,7 @@ class WeightTrackerChart extends StatelessWidget {
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
-                reservedSize: 40,
+                reservedSize: 40.w,
                 interval: 5,
                 getTitlesWidget: (value, meta) => Text(
                   value.toInt().toString(),
@@ -88,12 +89,12 @@ class WeightTrackerChart extends StatelessWidget {
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
-                reservedSize: 22,
+                reservedSize: 22.h,
                 getTitlesWidget: (value, meta) {
                   if (value == minX || value == maxX) {
                     final date = firstDate.add(Duration(days: value.toInt()));
                     return Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                      padding: EdgeInsets.only(top: 8.0.h),
                       child: Text(
                         DateFormat('MMM d').format(date),
                         style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),

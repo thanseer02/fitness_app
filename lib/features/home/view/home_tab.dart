@@ -29,20 +29,20 @@ class HomeTab extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.md),
+          padding: EdgeInsets.all(AppSpacing.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHeader(context, user.name, user.goal.toString().split('.').last),
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
               _buildHeroCard(context, progressVM),
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
               _buildWeeklyStrip(context, progressVM),
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
               const SectionHeader(title: 'Today'),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               _buildTodayStatsRow(context, nutritionVM, workoutVM),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
               _buildStartWorkoutButton(context, workoutVM),
             ],
           ),
@@ -85,7 +85,7 @@ class HomeTab extends StatelessWidget {
 
     return AppCard(
       color: theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: EdgeInsets.all(AppSpacing.lg),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -93,7 +93,7 @@ class HomeTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Current Weight', style: theme.textTheme.labelLarge),
-              const SizedBox(height: AppSpacing.xs),
+              SizedBox(height: AppSpacing.xs),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
@@ -104,7 +104,7 @@ class HomeTab extends StatelessWidget {
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.xs),
+                  SizedBox(width: AppSpacing.xs),
                   Text('kg', style: theme.textTheme.titleMedium),
                 ],
               ),
@@ -149,7 +149,7 @@ class HomeTab extends StatelessWidget {
     final startOfWeek = now.subtract(Duration(days: currentDayOfWeek - 1));
 
     return AppCard(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: AppSpacing.sm),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: AppSpacing.sm),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: List.generate(7, (index) {
@@ -182,7 +182,7 @@ class HomeTab extends StatelessWidget {
                   fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
                 ),
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               Icon(iconData, color: iconColor, size: 24),
             ],
           );
@@ -213,7 +213,7 @@ class HomeTab extends StatelessWidget {
             Icons.local_fire_department,
           ),
         ),
-        const SizedBox(width: AppSpacing.sm),
+        SizedBox(width: AppSpacing.sm),
         Expanded(
           child: _buildStatRingCard(
             context,
@@ -223,10 +223,10 @@ class HomeTab extends StatelessWidget {
             Icons.fitness_center,
           ),
         ),
-        const SizedBox(width: AppSpacing.sm),
+        SizedBox(width: AppSpacing.sm),
         Expanded(
           child: AppCard(
-            padding: const EdgeInsets.all(AppSpacing.sm),
+            padding: EdgeInsets.all(AppSpacing.sm),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (_) => const WorkoutTab()));
             },
@@ -234,7 +234,7 @@ class HomeTab extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.sports_gymnastics, color: Theme.of(context).colorScheme.primary, size: 32),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 Text(
                   workout?.name ?? 'Rest Day',
                   textAlign: TextAlign.center,
@@ -252,7 +252,7 @@ class HomeTab extends StatelessWidget {
 
   Widget _buildStatRingCard(BuildContext context, String label, double progress, Color color, IconData icon) {
     return AppCard(
-      padding: const EdgeInsets.all(AppSpacing.sm),
+      padding: EdgeInsets.all(AppSpacing.sm),
       child: Column(
         children: [
           ProgressRing(
@@ -262,7 +262,7 @@ class HomeTab extends StatelessWidget {
             color: color,
             centerWidget: Icon(icon, color: color, size: 24),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           Text(label, style: Theme.of(context).textTheme.labelMedium),
         ],
       ),

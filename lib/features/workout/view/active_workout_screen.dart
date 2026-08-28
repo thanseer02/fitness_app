@@ -61,9 +61,9 @@ class _ActiveWorkoutScreenState extends State<ActiveWorkoutScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(Icons.workspace_premium, color: AppColors.primary, size: 64),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             Text('Workout Complete!', style: Theme.of(context).textTheme.headlineSmall),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             const Text('Great job crushing your goals today.'),
           ],
         ),
@@ -126,7 +126,7 @@ class _ActiveWorkoutScreenState extends State<ActiveWorkoutScreen> {
           children: [
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.all(AppSpacing.md),
+                padding: EdgeInsets.all(AppSpacing.md),
                 children: [
                   // Header Card
                   AppCard(
@@ -135,20 +135,20 @@ class _ActiveWorkoutScreenState extends State<ActiveWorkoutScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(widget.workout.day.toUpperCase(), style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.primary, letterSpacing: 1.2)),
-                        const SizedBox(height: AppSpacing.xs),
+                        SizedBox(height: AppSpacing.xs),
                         Text(widget.workout.name, style: Theme.of(context).textTheme.headlineMedium),
-                        const SizedBox(height: AppSpacing.sm),
+                        SizedBox(height: AppSpacing.sm),
                         Row(
                           children: [
                             const Icon(Icons.fitness_center, size: 16),
-                            const SizedBox(width: AppSpacing.xs),
+                            SizedBox(width: AppSpacing.xs),
                             Text('${exercises.length} Exercises'),
                           ],
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.lg),
+                  SizedBox(height: AppSpacing.lg),
                   
                   // Exercises List
                   ...List.generate(exercises.length, (index) {
@@ -165,7 +165,7 @@ class _ActiveWorkoutScreenState extends State<ActiveWorkoutScreen> {
             
             // Sticky Bottom Button
             Container(
-              padding: const EdgeInsets.all(AppSpacing.md),
+              padding: EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 boxShadow: [

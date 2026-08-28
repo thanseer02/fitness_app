@@ -15,7 +15,7 @@ class TodayMacrosCard extends StatelessWidget {
     final targets = viewModel.targets;
 
     return AppCard(
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: EdgeInsets.all(AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -23,7 +23,7 @@ class TodayMacrosCard extends StatelessWidget {
             'Today\'s Macros',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -82,7 +82,7 @@ class TodayMacrosCard extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.sm),
         Text(
           label,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(

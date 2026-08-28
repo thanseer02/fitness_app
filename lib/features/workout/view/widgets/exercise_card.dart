@@ -23,10 +23,10 @@ class ExerciseCard extends StatelessWidget {
     final theme = Theme.of(context);
     
     return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+      padding: EdgeInsets.only(bottom: AppSpacing.md),
       child: AppCard(
         onTap: onTap,
-        padding: const EdgeInsets.all(AppSpacing.sm),
+        padding: EdgeInsets.all(AppSpacing.sm),
         color: isCompleted ? AppColors.secondary.withValues(alpha: 0.05) : null,
         child: Row(
           children: [
@@ -46,7 +46,7 @@ class ExerciseCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: AppSpacing.md),
+            SizedBox(width: AppSpacing.md),
             
             // Details
             Expanded(
@@ -61,7 +61,7 @@ class ExerciseCard extends StatelessWidget {
                       color: isCompleted ? theme.colorScheme.onSurface.withValues(alpha: 0.5) : null,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xs),
+                  SizedBox(height: AppSpacing.xs),
                   StatChip(
                     label: '${exercise.sets} sets × ${exercise.reps} reps',
                     color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
@@ -72,7 +72,7 @@ class ExerciseCard extends StatelessWidget {
             
             // Status Icon
             Padding(
-              padding: const EdgeInsets.only(right: AppSpacing.sm),
+              padding: EdgeInsets.only(right: AppSpacing.sm),
               child: Icon(
                 isCompleted ? Icons.check_circle : Icons.chevron_right,
                 color: isCompleted ? AppColors.secondary : theme.colorScheme.onSurfaceVariant,

@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppSpacing {
-  static const double xs = 4.0;
-  static const double sm = 8.0;
-  static const double md = 16.0;
-  static const double lg = 24.0;
-  static const double xl = 32.0;
-  static const double xxl = 48.0;
+  static double get xs => 4.0.w;
+  static double get sm => 8.0.w;
+  static double get md => 16.0.w;
+  static double get lg => 24.0.w;
+  static double get xl => 32.0.w;
+  static double get xxl => 48.0.w;
 }
 
 class AppRadius {
-  static const double sm = 8.0;
-  static const double md = 12.0;
-  static const double lg = 16.0;
-  static const double xl = 24.0;
-  static const double round = 99.0;
+  static double get sm => 8.0.r;
+  static double get md => 12.0.r;
+  static double get lg => 16.0.r;
+  static double get xl => 24.0.r;
+  static double get round => 99.0.r;
 
-  static const BorderRadius smRadius = BorderRadius.all(Radius.circular(sm));
-  static const BorderRadius mdRadius = BorderRadius.all(Radius.circular(md));
-  static const BorderRadius lgRadius = BorderRadius.all(Radius.circular(lg));
-  static const BorderRadius xlRadius = BorderRadius.all(Radius.circular(xl));
-  static const BorderRadius roundRadius = BorderRadius.all(
-    Radius.circular(round),
-  );
+  static BorderRadius get smRadius => BorderRadius.all(Radius.circular(sm));
+  static BorderRadius get mdRadius => BorderRadius.all(Radius.circular(md));
+  static BorderRadius get lgRadius => BorderRadius.all(Radius.circular(lg));
+  static BorderRadius get xlRadius => BorderRadius.all(Radius.circular(xl));
+  static BorderRadius get roundRadius => BorderRadius.all(Radius.circular(round));
 }

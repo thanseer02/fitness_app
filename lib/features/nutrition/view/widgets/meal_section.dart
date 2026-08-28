@@ -36,7 +36,7 @@ class _MealSectionState extends State<MealSection> {
     double mealCals = widget.meal.entries.fold(0.0, (sum, e) => sum + (e.calories ?? 0));
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+      padding: EdgeInsets.only(bottom: AppSpacing.md),
       child: AppCard(
         padding: EdgeInsets.zero,
         child: Theme(
@@ -55,7 +55,7 @@ class _MealSectionState extends State<MealSection> {
                   '${mealCals.toStringAsFixed(0)} kcal',
                   style: theme.textTheme.labelLarge?.copyWith(color: AppColors.primary),
                 ),
-                const SizedBox(width: AppSpacing.sm),
+                SizedBox(width: AppSpacing.sm),
                 Icon(
                   _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
                   color: theme.colorScheme.onSurfaceVariant,
@@ -73,7 +73,7 @@ class _MealSectionState extends State<MealSection> {
                   itemBuilder: (context, index) {
                     final entry = widget.meal.entries[index];
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
                       child: Row(
                         children: [
                           Expanded(
@@ -99,7 +99,7 @@ class _MealSectionState extends State<MealSection> {
                 ),
               ],
               Padding(
-                padding: const EdgeInsets.all(AppSpacing.md),
+                padding: EdgeInsets.all(AppSpacing.md),
                 child: SizedBox(
                   width: double.infinity,
                   child: AppButton(

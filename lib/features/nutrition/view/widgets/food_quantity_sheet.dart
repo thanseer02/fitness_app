@@ -39,9 +39,9 @@ class _FoodQuantitySheetState extends State<FoodQuantitySheet> {
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
       ),
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: EdgeInsets.all(AppSpacing.lg),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -49,14 +49,14 @@ class _FoodQuantitySheetState extends State<FoodQuantitySheet> {
           Container(
             width: 40,
             height: 4,
-            margin: const EdgeInsets.only(bottom: AppSpacing.lg),
+            margin: EdgeInsets.only(bottom: AppSpacing.lg),
             decoration: BoxDecoration(
               color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
               borderRadius: AppRadius.roundRadius,
             ),
           ),
           Text(widget.food.name, style: theme.textTheme.headlineSmall),
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl),
           
           // Stepper
           Row(
@@ -67,7 +67,7 @@ class _FoodQuantitySheetState extends State<FoodQuantitySheet> {
                 icon: const Icon(Icons.remove_circle_outline, size: 36),
                 color: theme.colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(width: AppSpacing.lg),
+              SizedBox(width: AppSpacing.lg),
               Column(
                 children: [
                   Text(
@@ -77,7 +77,7 @@ class _FoodQuantitySheetState extends State<FoodQuantitySheet> {
                   Text('grams', style: theme.textTheme.labelMedium),
                 ],
               ),
-              const SizedBox(width: AppSpacing.lg),
+              SizedBox(width: AppSpacing.lg),
               IconButton(
                 onPressed: () => _adjustQuantity(_step),
                 icon: const Icon(Icons.add_circle_outline, size: 36),
@@ -85,7 +85,7 @@ class _FoodQuantitySheetState extends State<FoodQuantitySheet> {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl),
           
           // Live Macros
           Row(
@@ -97,7 +97,7 @@ class _FoodQuantitySheetState extends State<FoodQuantitySheet> {
               _buildMacroStat(theme, 'Fat', '${fat}g', Colors.yellow[700]!),
             ],
           ),
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl),
           
           SizedBox(
             width: double.infinity,
