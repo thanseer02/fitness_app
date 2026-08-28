@@ -5,11 +5,20 @@ import '../models/user_profile.dart';
 import '../models/exercise.dart';
 import '../models/workout.dart';
 import '../models/workout_session.dart';
+import '../models/food.dart';
+import '../models/daily_nutrition.dart';
 
 final isarProvider = FutureProvider<Isar>((ref) async {
   final dir = await getApplicationDocumentsDirectory();
   return Isar.open(
-    [UserProfileSchema, ExerciseSchema, WorkoutSchema, WorkoutSessionSchema],
+    [
+      UserProfileSchema,
+      ExerciseSchema,
+      WorkoutSchema,
+      WorkoutSessionSchema,
+      FoodSchema,
+      DailyNutritionSchema,
+    ],
     directory: dir.path,
   );
 });
