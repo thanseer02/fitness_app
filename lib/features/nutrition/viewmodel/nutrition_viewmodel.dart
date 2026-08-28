@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:fitjourney/models/food.dart';
 import 'package:fitjourney/models/daily_nutrition.dart';
-import 'package:fitjourney/features/profile/viewmodel/user_profile_provider.dart';
+import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
+import 'package:fitjourney/features/profile/repository/profile_repository.dart';
 import 'package:fitjourney/core/services/calorie_service.dart';
 import 'package:fitjourney/core/services/notification_service.dart';
 import 'package:fitjourney/features/nutrition/repository/nutrition_repository.dart';
@@ -17,8 +19,8 @@ class NutritionViewModel extends ChangeNotifier {
   NutritionViewModel(this._ref) {
     _init();
     
-    _ref.listen(userProfileNotifierProvider, (previous, next) {
-      final profile = next.value;
+    _ref.listen(profileViewModelProvider, (previous, next) {
+      final profile = next.userProfile;
       if (profile != null) {
         _targets = CalorieService.calculateTargets(profile);
         notifyListeners();
@@ -45,7 +47,12 @@ class NutritionViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final profile = await _ref.read(userProfileNotifierProvider.future);
+      final profileViewModel = _ref.read(profileViewModelProvider);
+      var profile = profileViewModel.userProfile;
+      if (profile == null) {
+        final profileRepo = await _ref.read(profileRepositoryProvider.future);
+        profile = await profileRepo.getUserProfile();
+      }
       if (profile != null) {
         _targets = CalorieService.calculateTargets(profile);
       }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:fitjourney/models/weight_entry.dart';
 import 'package:fitjourney/models/achievement.dart';
 import 'package:fitjourney/features/progress/repository/progress_repository.dart';

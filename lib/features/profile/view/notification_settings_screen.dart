@@ -11,7 +11,6 @@ class NotificationSettingsScreen extends ConsumerWidget {
 
     if (viewModel.isLoading) {
       return const Scaffold(
-        appBar: AppBar(title: Text('Notification Settings')),
         body: Center(child: CircularProgressIndicator()),
       );
     }
@@ -26,7 +25,6 @@ class NotificationSettingsScreen extends ConsumerWidget {
     final settings = viewModel.notificationSettings;
     if (settings == null) {
       return const Scaffold(
-        appBar: AppBar(title: Text('Notification Settings')),
         body: Center(child: Text('No settings available')),
       );
     }

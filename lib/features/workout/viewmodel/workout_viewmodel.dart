@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:fitjourney/models/workout.dart';
 import 'package:fitjourney/models/workout_session.dart';
 import 'package:fitjourney/features/workout/repository/workout_repository.dart';

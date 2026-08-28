@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:fitjourney/models/user_profile.dart';
 import 'package:fitjourney/models/app_settings.dart';
 import 'package:fitjourney/models/notification_settings.dart';
