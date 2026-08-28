@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fitjourney/models/weight_entry.dart';
 import 'package:fitjourney/models/achievement.dart';
+import 'package:fitjourney/models/workout_session.dart';
 import 'package:fitjourney/features/progress/repository/progress_repository.dart';
 
 class ProgressStats {
@@ -84,6 +85,9 @@ class ProgressViewModel extends ChangeNotifier {
   List<AchievementItem> _achievements = [];
   List<AchievementItem> get achievements => _achievements;
 
+  List<WorkoutSession> _recentSessions = [];
+  List<WorkoutSession> get recentSessions => _recentSessions;
+
   Future<void> _init() async {
     await loadAllProgressData();
   }
@@ -98,6 +102,12 @@ class ProgressViewModel extends ChangeNotifier {
       _streakData = await _calculateStreak(_repository);
       _achievements = await _fetchAchievements(_repository);
       
+      final now = DateTime.now();
+      _recentSessions = await _repository.getWorkoutSessionsBetween(
+        now.subtract(const Duration(days: 14)),
+        now,
+      );
+
       await _evaluateAchievements(_repository);
     } catch (e) {
       _error = e.toString();

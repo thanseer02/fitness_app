@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fitjourney/features/workout/view/workout_tab.dart';
-
+import 'package:fitjourney/features/home/view/home_tab.dart';
 import 'package:fitjourney/features/nutrition/view/nutrition_tab.dart';
 import 'package:fitjourney/features/progress/view/progress_tab.dart';
 import 'package:fitjourney/features/profile/view/profile_tab.dart';
@@ -16,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
   final _tabs = const [
-    WorkoutTab(),
+    HomeTab(),
     NutritionTab(),
     ProgressTab(),
     ProfileTab(),
@@ -31,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         type: BottomNavigationBarType.fixed,
         onTap: (i) => setState(() => _currentIndex = i),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Workout'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.restaurant), label: 'Nutrition'),
           BottomNavigationBarItem(icon: Icon(Icons.trending_up), label: 'Progress'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
