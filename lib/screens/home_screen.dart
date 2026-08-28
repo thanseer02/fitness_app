@@ -7,6 +7,7 @@ import 'nutrition_tab.dart';
 import '../providers/nutrition_provider.dart';
 import 'progress_tab.dart';
 import 'notification_settings_screen.dart';
+import '../providers/theme_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -109,6 +110,33 @@ class _ProfileTab extends ConsumerWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 16),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('App Settings', style: Theme.of(context).textTheme.titleLarge),
+                      const SizedBox(height: 8),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final themeState = ref.watch(themeProvider);
+                          final isDark = themeState.value == ThemeMode.dark;
+                          return SwitchListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: const Text('Dark Mode'),
+                            value: isDark,
+                            onChanged: (val) {
+                              ref.read(themeProvider.notifier).toggleTheme(val);
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           );
         },
@@ -118,3 +146,4 @@ class _ProfileTab extends ConsumerWidget {
     );
   }
 }
+

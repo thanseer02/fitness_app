@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../providers/progress_provider.dart';
+import '../providers/gamification_provider.dart';
 import 'weekly_check_in_screen.dart';
 
 class ProgressTab extends ConsumerWidget {
@@ -11,6 +12,14 @@ class ProgressTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final historyState = ref.watch(weightHistoryProvider);
     final statsState = ref.watch(progressStatsProvider);
+    final monthlyState = ref.watch(monthlySummaryProvider);
+    final streakState = ref.watch(streakProvider);
+    final achievementsState = ref.watch(achievementProvider);
+
+    // Automatically evaluate achievements when tab is opened
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(achievementProvider.notifier).evaluateAchievements();
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('Progress Dashboard')),
@@ -19,6 +28,90 @@ class ProgressTab extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Current Streak
+            streakState.when(
+              data: (streak) {
+                return Card(
+                  color: Colors.orange.shade50,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(color: Colors.orange, width: 2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.local_fire_department, color: Colors.orange, size: 32),
+                        const SizedBox(width: 12),
+                        Text(
+                          '${streak.currentStreak} Day Streak!',
+                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepOrange),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              loading: () => const SizedBox.shrink(),
+              error: (e, st) => const SizedBox.shrink(),
+            ),
+            const SizedBox(height: 16),
+
+            // Monthly Summary
+            Text('This Month', style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 8),
+            monthlyState.when(
+              data: (monthly) {
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Workouts:'),
+                            Text('${monthly.workoutsCompleted}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Total Calories:'),
+                            Text('${monthly.totalCalories.toStringAsFixed(0)} kcal', style: const TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Total Protein:'),
+                            Text('${monthly.totalProtein.toStringAsFixed(0)} g', style: const TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Weight Change:'),
+                            Text('${monthly.weightChange > 0 ? '+' : ''}${monthly.weightChange.toStringAsFixed(1)} kg', style: const TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (e, st) => Center(child: Text('Error: $e')),
+            ),
+            const SizedBox(height: 24),
+
+            // Weight Tracker
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -97,7 +190,60 @@ class ProgressTab extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 32),
-            Text('Aggregate Stats', style: Theme.of(context).textTheme.titleLarge),
+
+            // Achievements
+            Text('Achievements', style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 8),
+            achievementsState.when(
+              data: (achievements) {
+                return SizedBox(
+                  height: 140,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: achievements.length,
+                    itemBuilder: (context, index) {
+                      final ach = achievements[index];
+                      return Container(
+                        width: 120,
+                        margin: const EdgeInsets.only(right: 12),
+                        child: Card(
+                          color: ach.isUnlocked ? Colors.amber.shade100 : Colors.grey.shade200,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  ach.isUnlocked ? Icons.emoji_events : Icons.lock,
+                                  color: ach.isUnlocked ? Colors.amber.shade800 : Colors.grey,
+                                  size: 40,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  ach.title,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                    color: ach.isUnlocked ? Colors.black87 : Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (e, st) => Center(child: Text('Error: $e')),
+            ),
+            const SizedBox(height: 32),
+
+            // All-Time Stats
+            Text('All-Time Stats', style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 16),
             statsState.when(
               data: (stats) {
@@ -155,3 +301,4 @@ class _StatCard extends StatelessWidget {
     );
   }
 }
+

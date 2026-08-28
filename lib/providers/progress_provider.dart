@@ -95,3 +95,82 @@ final progressStatsProvider = FutureProvider<ProgressStats>((ref) async {
     workoutConsistencyPercentage: consistency,
   );
 });
+
+class MonthlySummary {
+  final int workoutsCompleted;
+  final double totalCalories;
+  final double totalProtein;
+  final double weightChange;
+  final double consistencyPercentage;
+
+  MonthlySummary({
+    required this.workoutsCompleted,
+    required this.totalCalories,
+    required this.totalProtein,
+    required this.weightChange,
+    required this.consistencyPercentage,
+  });
+}
+
+final monthlySummaryProvider = FutureProvider<MonthlySummary>((ref) async {
+  final isar = await ref.watch(isarProvider.future);
+  
+  final now = DateTime.now();
+  final startOfMonth = DateTime(now.year, now.month, 1);
+  final endOfMonth = DateTime(now.year, now.month + 1, 0, 23, 59, 59);
+
+  // 1. Workouts this month
+  final workouts = await isar.workoutSessions
+      .filter()
+      .dateBetween(startOfMonth, endOfMonth)
+      .findAll();
+  final workoutsCompleted = workouts.length;
+
+  // 2. Nutrition this month
+  final nutritions = await isar.dailyNutritions
+      .filter()
+      .dateBetween(startOfMonth, endOfMonth)
+      .findAll();
+  
+  double totalCals = 0;
+  double totalPro = 0;
+  for (final n in nutritions) {
+    for (final m in n.meals) {
+      for (final e in m.entries) {
+        totalCals += e.calories ?? 0;
+        totalPro += e.protein ?? 0;
+      }
+    }
+  }
+
+  // 3. Weight change
+  final weights = await isar.weightEntrys
+      .filter()
+      .dateBetween(startOfMonth, endOfMonth)
+      .sortByDate()
+      .findAll();
+  
+  double weightChange = 0;
+  if (weights.length >= 2) {
+    weightChange = weights.last.weight - weights.first.weight;
+  }
+
+  // 4. Consistency
+  final scheduledWorkoutsCount = await isar.workouts.count();
+  final weeksInMonth = endOfMonth.day / 7;
+  final expectedWorkouts = scheduledWorkoutsCount * weeksInMonth;
+  double consistency = 0;
+  if (expectedWorkouts > 0) {
+    consistency = (workoutsCompleted / expectedWorkouts) * 100;
+  }
+  consistency = consistency.clamp(0.0, 100.0);
+
+  return MonthlySummary(
+    workoutsCompleted: workoutsCompleted,
+    totalCalories: totalCals,
+    totalProtein: totalPro,
+    weightChange: weightChange,
+    consistencyPercentage: consistency,
+  );
+});
+
