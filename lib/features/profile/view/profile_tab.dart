@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fitjourney/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:fitjourney/features/profile/view/notification_settings_screen.dart';
+import 'package:fitjourney/features/profile/view/edit_profile_screen.dart';
 import 'package:fitjourney/core/theme/app_colors.dart';
 import 'package:fitjourney/core/theme/app_constants.dart';
 import 'package:fitjourney/shared/widgets/app_card.dart';
@@ -118,7 +119,11 @@ class ProfileTab extends StatelessWidget {
                         context,
                         icon: Icons.edit_outlined,
                         title: 'Edit Profile',
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const EditProfileScreen()),
+                          );
+                        },
                       ),
                       const Divider(height: 1),
                       _buildSettingsTile(
