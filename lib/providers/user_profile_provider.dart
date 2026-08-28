@@ -3,7 +3,7 @@ import 'package:isar/isar.dart';
 import '../models/user_profile.dart';
 import 'isar_provider.dart';
 
-class UserProfileNotifier extends AutoDisposeAsyncNotifier<UserProfile?> {
+class UserProfileNotifier extends AsyncNotifier<UserProfile?> {
   @override
   Future<UserProfile?> build() async {
     final isar = await ref.watch(isarProvider.future);
@@ -24,6 +24,6 @@ class UserProfileNotifier extends AutoDisposeAsyncNotifier<UserProfile?> {
   }
 }
 
-final userProfileNotifierProvider = AutoDisposeAsyncNotifierProvider<UserProfileNotifier, UserProfile?>(() {
+final userProfileNotifierProvider = AsyncNotifierProvider<UserProfileNotifier, UserProfile?>(() {
   return UserProfileNotifier();
 });
